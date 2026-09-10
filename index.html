@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#EF4827">
-<title>VTM · BusaoEasy 8.1 (build 9) · Painel de Controle TV Busão</title>
+<title>VTM · BusaoEasy 8.1 (build 10) · Painel de Controle TV Busão</title>
 <meta name="author" content="ASG - Soluções Administrativas em HTML">
 <meta name="description" content="Controle de bens e ocorrências do TV Busão em arquivo único. ASG - Soluções Administrativas em HTML - (92) 98404-0163">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -983,7 +983,7 @@ html[data-tema="escuro"] .bt-foto.vazio{color:#FF8A6B}
     <button class="quem" id="btQuem" title="Trocar de pessoa"></button>
     <span class="selo-admin" id="seloAdmin">Administrador</span>
     <button class="sinal desligado" id="sinal" title="Estado da conexão com a base">
-      <span class="sinal-txt" id="sinalTxt">Sem base</span>
+      <span class="sinal-txt" id="sinalTxt">Atualizando…</span>
     </button>
     <button class="ico" id="btTema" title="Alternar tema" aria-label="Alternar tema">
       <svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
@@ -1037,7 +1037,6 @@ html[data-tema="escuro"] .bt-foto.vazio{color:#FF8A6B}
     </button>
     <div class="menu-sub" data-sub="g4">
       <button data-a="sincronizar" data-perfis="a t"><svg viewBox="0 0 24 24"><path d="M20 11A8 8 0 006.3 6.3L4 8.5m0 0V4m0 4.5h4.5M4 13a8 8 0 0013.7 4.7L20 15.5m0 0V20m0-4.5h-4.5"/></svg>Sincronizar agora</button>
-      <button data-a="conexao" data-perfis="a"><svg viewBox="0 0 24 24"><path d="M9 15l6-6M10.5 6.5l1.8-1.8a4 4 0 015.7 5.7l-1.8 1.8M13.5 17.5l-1.8 1.8a4 4 0 01-5.7-5.7l1.8-1.8"/></svg>Conexão com a base</button>
       <button data-a="linkAcesso" data-perfis="a"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.5.5l3-3a5 5 0 00-7-7l-1.5 1.5M14 11a5 5 0 00-7.5-.5l-3 3a5 5 0 007 7l1.5-1.5"/></svg>Compartilhar link de acesso</button>
     </div>
   </div>
@@ -1460,7 +1459,9 @@ const Cofre = (()=>{
    Se preferir já sair conectado, cole aqui a URL /exec do
    Apps Script e ninguém precisará configurar nada.
    ============================================================ */
-let ENDERECO_BASE = "";
+/* Endereço da base (Apps Script) já configurado: todo aparelho que abrir o
+   painel entra conectado, sem ninguém precisar colar nada. */
+let ENDERECO_BASE = "https://script.google.com/macros/s/AKfycbxdMBVpE22vm6yVGmE_xmZdxkHSK0YmCFCb4va_-KOtNtLjtF3kIvv0Z5W4ydKvaRflFw/exec";
 
 const CH_BASE = "vtm_tvbusao_base";
 const CH_MARCA = "vtm_tvbusao_marca";
@@ -1908,11 +1909,12 @@ const Nuvem = {
     if(!el) return;
     const n = this.fila.size;
     let cls = this.estado, txt;
-    if(!this.endereco){ cls = "desligado"; txt = "Sem base"; }
-    else if(this.estado === "enviando"){ txt = "Enviando…"; }
-    else if(this.estado === "erro"){ txt = n ? `${n} na fila` : "Sem conexão"; cls = "erro"; }
-    else if(n){ txt = `${n} na fila`; cls = "fila"; }
-    else { txt = "Sincronizado"; cls = "ok"; }
+    /* Três estados, só o que interessa a quem usa: está atualizando, está
+       atualizado, ou não conseguiu falar com a base. */
+    if(this.estado === "enviando"){ txt = "Atualizando…"; cls = "enviando"; }
+    else if(this.estado === "erro"){ txt = "Sem conexão"; cls = "erro"; }
+    else if(n){ txt = "Atualizando…"; cls = "fila"; }
+    else { txt = "Atualizado"; cls = "ok"; }
     el.className = "sinal " + cls;
     tx.textContent = txt;
     el.title = this.ultimoErro && this.estado === "erro"
@@ -5309,7 +5311,6 @@ document.addEventListener("click", ev => {
     if(a === "modoPainel") escolherModo("painel");
     if(a === "modoRegOS") escolherModo("regos");
     if(a === "sincronizar") Nuvem.sincronizar(true);
-    if(a === "conexao") configurarBase();
     if(a === "cadastros") abrirCadastros();
     if(a === "excluirUsuario") abrirExcluirUsuario();
     if(a === "entrar") pedirEntrada();
@@ -5325,7 +5326,7 @@ document.addEventListener("click", ev => {
   }
 
   if(ev.target.closest("#sinal")){
-    if(Nuvem.endereco) Nuvem.sincronizar(true); else configurarBase();
+    Nuvem.sincronizar(true);
     return;
   }
 
@@ -5655,4 +5656,3 @@ window.addEventListener("beforeunload", ev => {
 </script>
 </body>
 </html>
-

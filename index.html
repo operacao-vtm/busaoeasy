@@ -1243,7 +1243,7 @@ html[data-tema="escuro"] .bt-foto.vazio{color:#FF8A6B}
     <div class="lista" id="lista"></div>
   </section>
 
-  <p class="rodape-versao">BusaoEasy 8.1 · build 20</p>
+  <p class="rodape-versao">BusaoEasy 8.1 · build 22</p>
 </main>
 
 <div class="telao" id="telao">
@@ -1337,6 +1337,7 @@ html[data-tema="escuro"] .bt-foto.vazio{color:#FF8A6B}
     <div class="campo"><label>Senha</label>
       <input id="enSenha" type="password" placeholder="sua senha de entrada"></div>
     <button class="bt forte" id="btEntrar">Entrar</button>
+    <button class="bt" id="btCancelarEntrada" style="display:none">Cancelar</button>
     <p class="entrada-erro" id="entradaErro"></p>
     <p class="entrada-nota">Entre com seu nome e senha. Cada perfil vê e faz
     apenas o que lhe cabe.</p>
@@ -1627,7 +1628,10 @@ const USUARIOS_BASE = [
   {id:"u_carlos",    nome:"Carlos Pontes", perfil:"Administrador", zap:"(92) 98404-0163", senha:"carlos26!"},
   {id:"u_joao",      nome:"João",          perfil:"Administrador", zap:"", senha:"joao26!"},
   {id:"u_carlene",   nome:"Carlene",       perfil:"Técnico",       zap:"", senha:"carlene26"},
-  {id:"u_alexandre", nome:"Alexandre",     perfil:"Técnico",       zap:"", senha:"alex19"}
+  {id:"u_alexandre", nome:"Alexandre",     perfil:"Técnico",       zap:"", senha:"alex19"},
+  /* Diretoria entra sem senha: é só escolher o nome e clicar em Entrar.
+     Abre direto no Modo Painel, com o estado de toda a frota. */
+  {id:"u_diretoria", nome:"Diretoria",     perfil:"Observador",    zap:"", senha:""}
 ];
 
 let USUARIOS = USUARIOS_BASE.map(u => ({...u}));
@@ -4477,8 +4481,24 @@ function pedirEntrada(){
   $("#enNome").innerHTML = lista.map(u => `<option value="${esc(u.id)}">${esc(u.nome)}</option>`).join("");
   $("#enSenha").value = "";
   $("#entradaErro").textContent = "";
+  /* Se já havia alguém usando, dá para desistir e voltar. Na primeira entrada
+     não: sem identificação o painel não abre. */
+  const bc = $("#btCancelarEntrada");
+  if(bc) bc.style.display = (QUEM && QUEM.nome) ? "" : "none";
   $("#telaEntrada").classList.add("on");
   setTimeout(() => $("#enSenha").focus(), 40);
+}
+
+/* Cada perfil entra direto no modo que lhe serve, sem procurar no menu:
+     Técnico    → Modo Técnico (TV e ônibus), que é como ele trabalha em campo
+     Observador → Modo Painel, o estado geral da frota
+     Administrador → Modo Full, a visão completa. Sem isso ele herdaria o modo
+                     de quem entrou antes e cairia numa tela limitada. */
+function modoInicialDoPerfil(){
+  const perfil = QUEM && QUEM.perfil;
+  if(perfil === "Técnico") escolherModo("tec");
+  else if(perfil === "Observador") escolherModo("painel");
+  else if(perfil === "Administrador") escolherModo("full");
 }
 
 function entrar(){
@@ -4494,6 +4514,7 @@ function entrar(){
   try{ sessionStorage.setItem(CH_QUEM, JSON.stringify(QUEM)); }catch(e){}
   $("#telaEntrada").classList.remove("on");
   pintarQuem(); pintarAdmin();
+  modoInicialDoPerfil();
   avisar(`Bom trabalho, ${u.nome.split(" ")[0]}`);
 }
 
@@ -5806,6 +5827,11 @@ document.addEventListener("click", ev => {
     return;
   }
   if(ev.target.closest("#btSalvarCad")){ salvarCadastros(); return; }
+  if(ev.target.closest("#btCancelarEntrada")){
+    $("#telaEntrada").classList.remove("on");
+    $("#entradaErro").textContent = "";
+    return;
+  }
   if(ev.target.closest("#btFecharLog") || ev.target.closest("#btFecharLog2")){ fecharLog(); return; }
   if(ev.target.closest("#btLogCSV")){ exportarLogCSV(); return; }
 
@@ -5847,13 +5873,15 @@ document.addEventListener("click", ev => {
 
   const cel = ev.target.closest(".cel");
   if(cel){
-    /* Observador só olha: o quadradinho não abre ficha. */
-    if(QUEM && QUEM.perfil === "Observador") return;
-    /* No Modo Registro de OS, o clique abre a tela enxuta de motivo, não a
-       ficha completa — a diretoria só relata o problema. */
-    if(document.documentElement.classList.contains("modo-regos")){
+    const raiz = document.documentElement;
+    /* Nos modos Painel e Registro de OS o clique abre a tela enxuta de motivo —
+       vale para qualquer perfil, inclusive a diretoria: ela avista um problema
+       na rua e registra ali mesmo, sem abrir a ficha inteira. */
+    if(raiz.classList.contains("modo-painel") || raiz.classList.contains("modo-regos")){
       abrirRegistroRapido(+cel.dataset.i); return;
     }
+    /* Fora desses modos, o Observador só olha: não abre ficha para editar. */
+    if(QUEM && QUEM.perfil === "Observador") return;
     abrirFicha(+cel.dataset.i, cel.closest("#mapaTec") ? "tec" : "adm"); return;
   }
 
@@ -5965,6 +5993,22 @@ document.addEventListener("keydown", ev => {
 
 document.addEventListener("keydown", ev => {
   if(ev.key === "Escape"){
+    /* O atalho do Esc nestas telas é só para administrador. Quem usa em campo
+       fecha pelo X, que continua em todas elas — ninguém fica preso. */
+    if(QUEM && QUEM.perfil === "Administrador"){
+      if($("#telaRegRapido").classList.contains("on")){ fecharRegistroRapido(); return; }
+      if($("#telaLog").classList.contains("on")){ fecharLog(); return; }
+      if($("#telaExcluir").classList.contains("on")){ fecharExcluirUsuario(); return; }
+      if($("#telaAcesso").classList.contains("on")){
+        $("#telaAcesso").classList.remove("on"); document.body.style.overflow = ""; return;
+      }
+      if($("#telaCad").classList.contains("on")){
+        $("#telaCad").classList.remove("on"); document.body.style.overflow = ""; return;
+      }
+      if($("#telaEntrada").classList.contains("on") && QUEM.nome){
+        $("#telaEntrada").classList.remove("on"); return;   // desistiu de trocar
+      }
+    }
     if($("#telaDet").classList.contains("on")){ fecharDetalhe(); return; }
     if($("#telaFoto").classList.contains("on")){ $("#telaFoto").classList.remove("on"); return; }
     if($("#telaVisor").classList.contains("on")){ fecharVisor(); return; }
@@ -6005,6 +6049,7 @@ if(QUEM === "dispensado") QUEM = null;
    abre o painel completo e vai registrar em nome de alguém. */
 else if(!QUEM && !document.documentElement.classList.contains("acesso-travado")) pedirEntrada();
 pintarQuem(); pintarAdmin();
+modoInicialDoPerfil();   /* reabriu com sessão guardada: volta ao modo do perfil */
 
 if(!Cofre.disponivel){
   setTimeout(() => avisar("Sem gravação no aparelho. Exporte antes de fechar."), 900);

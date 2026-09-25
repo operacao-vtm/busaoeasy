@@ -1243,7 +1243,7 @@ html[data-tema="escuro"] .bt-foto.vazio{color:#FF8A6B}
     <div class="lista" id="lista"></div>
   </section>
 
-  <p class="rodape-versao">BusaoEasy 8.1 · build 23</p>
+  <p class="rodape-versao">BusaoEasy 8.1 · build 24</p>
 </main>
 
 <div class="telao" id="telao">
@@ -1731,6 +1731,13 @@ function carregar(){
         BENS.forEach(b => (b.ocorrencias||[]).forEach(o => {
           if(o.statusSol === SOL_ANTIGO_AGUARDANDO) o.statusSol = SOL_AGUARDANDO;
         }));
+        /* Devolve a foto que vem no arquivo a quem ficou sem ela na memória —
+           é assim que ela deixa de ocupar espaço no aparelho sem sumir da tela. */
+        if(typeof FOTOS_CAMPO !== "undefined"){
+          BENS.forEach(b => {
+            if(!b.imgMonitor && FOTOS_CAMPO[String(b.n)]) b.imgMonitor = FOTOS_CAMPO[String(b.n)];
+          });
+        }
         if(d.marca) Nuvem.marca = d.marca;
         if(Array.isArray(d.fila)) Nuvem.fila = new Set(d.fila);
         /* Só troca se a memória tiver gente: lista vazia não pode apagar o
@@ -1757,10 +1764,26 @@ function arrumarOnibus(){
 }
 
 let avisouCheio = false;
+/* As fotos que já vêm dentro do arquivo (FOTOS_CAMPO) não precisam ser
+   guardadas de novo na memória do aparelho — são as mesmas, e juntas passavam
+   de 11 MB, acima do que um celular aceita. Ao gravar, tiram-se essas; ao
+   abrir, elas voltam do próprio arquivo. Foto tirada em campo é outra coisa:
+   essa é guardada normalmente. */
+function bensParaGuardar(){
+  const doArquivo = (typeof FOTOS_CAMPO !== "undefined") ? FOTOS_CAMPO : {};
+  return BENS.map(b => {
+    const igual = doArquivo[String(b.n)] && doArquivo[String(b.n)] === b.imgMonitor;
+    if(!igual) return b;
+    const copia = {...b};
+    delete copia.imgMonitor;          // volta do arquivo quando abrir
+    return copia;
+  });
+}
+
 function gravar(){
   const deu = Cofre.gravar(JSON.stringify({
     versao:1, salvoEm:new Date().toISOString(),
-    marca:Nuvem.marca, fila:[...Nuvem.fila], bens:BENS, usuarios:USUARIOS
+    marca:Nuvem.marca, fila:[...Nuvem.fila], bens:bensParaGuardar(), usuarios:USUARIOS
   }));
 
   if(!deu && !avisouCheio){

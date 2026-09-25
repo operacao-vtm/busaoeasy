@@ -1243,7 +1243,7 @@ html[data-tema="escuro"] .bt-foto.vazio{color:#FF8A6B}
     <div class="lista" id="lista"></div>
   </section>
 
-  <p class="rodape-versao">BusaoEasy 8.1 · build 22</p>
+  <p class="rodape-versao">BusaoEasy 8.1 · build 23</p>
 </main>
 
 <div class="telao" id="telao">
@@ -4511,7 +4511,9 @@ function entrar(){
     return;
   }
   QUEM = {id:u.id, nome:u.nome, perfil:u.perfil || "Técnico", senha:u.senha || ""};
-  try{ sessionStorage.setItem(CH_QUEM, JSON.stringify(QUEM)); }catch(e){}
+  /* Memória do aparelho, não da sessão: quem entrou continua entrado quando
+     fechar e abrir o navegador. Só sai quando tocar em Sair. */
+  try{ localStorage.setItem(CH_QUEM, JSON.stringify(QUEM)); }catch(e){}
   $("#telaEntrada").classList.remove("on");
   pintarQuem(); pintarAdmin();
   modoInicialDoPerfil();
@@ -4523,7 +4525,7 @@ function entrar(){
 function sairDeVez(){
   const nome = QUEM && QUEM.nome;
   QUEM = null;
-  try{ sessionStorage.removeItem(CH_QUEM); }catch(e){}
+  try{ localStorage.removeItem(CH_QUEM); sessionStorage.removeItem(CH_QUEM); }catch(e){}
   pintarQuem(); pintarAdmin();
   pedirEntrada();
   if(nome) avisar(`Até logo, ${nome.split(" ")[0]}`);
@@ -4531,7 +4533,7 @@ function sairDeVez(){
 
 function sairDaConta(){
   QUEM = null;
-  try{ sessionStorage.removeItem(CH_QUEM); }catch(e){}
+  try{ localStorage.removeItem(CH_QUEM); sessionStorage.removeItem(CH_QUEM); }catch(e){}
   pintarQuem();
   pedirEntrada();
 }
@@ -6039,7 +6041,7 @@ aplicarModoDoLink();
 Nuvem.pintar();
 
 try{
-  const g = sessionStorage.getItem(CH_QUEM);
+  const g = localStorage.getItem(CH_QUEM) || sessionStorage.getItem(CH_QUEM);
   if(g && g !== "null") QUEM = JSON.parse(g);
   else if(g === "null") QUEM = "dispensado";
 }catch(e){ QUEM = null; }

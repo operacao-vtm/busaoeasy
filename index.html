@@ -973,6 +973,9 @@ table.tab{border-collapse:collapse;width:100%;font-size:12.5px;min-width:max-con
      espaço em partes iguais entre si — nenhuma com tratamento próprio. */
   table.tab th,table.tab td{padding:9px 8px;overflow:hidden;text-overflow:ellipsis}
   table.tab th,table.tab td{width:auto}
+  /* Telefone e ICCID do chip aparecem inteiros, sem reticências. */
+  table.tab th.col-tel{width:125px}
+  table.tab th.col-iccid{width:205px}
 }
 table.tab th{
   position:sticky;top:0;z-index:2;background:var(--carta2);text-align:center;
@@ -1276,7 +1279,7 @@ html[data-tema="escuro"] .bt-foto.vazio{color:#FF8A6B}
     <div class="lista" id="lista"></div>
   </section>
 
-  <p class="rodape-versao">BusaoEasy 8.1 · build 27</p>
+  <p class="rodape-versao">BusaoEasy 8.1 · build 28</p>
 </main>
 
 <div class="telao" id="telao">
@@ -2535,9 +2538,16 @@ function celula(v, rotulo){
   return t ? `<td>${esc(t)}</td>` : `<td class="pend">falta ${esc(rotulo)}</td>`;
 }
 
+/* Colunas do chip na tabela: largura própria para o número aparecer inteiro. */
+const CHIP_COL = {telChip:"col-tel", iccid:"col-iccid"};
+
 function tabelaAdm(its){
-  /* A ordem das colunas é a de COLUNAS_CADASTRO: mudar lá muda aqui. */
-  const cols = COLUNAS_CADASTRO.slice(1);          // o Nº TV é a coluna fixa
+  /* A ordem das colunas é a de COLUNAS_CADASTRO: mudar lá muda aqui.
+     Exceção só desta tabela: no lugar do Modem entram o telefone e o ICCID
+     do chip. O Modem continua na ficha e na conta do cadastro. */
+  const chip = ["telChip","iccid"].map(c => COLUNAS_GUARDADAS.find(x => x.c === c));
+  const cols = [].concat(...COLUNAS_CADASTRO.slice(1)   // o Nº TV é a coluna fixa
+    .map(c => c.c === "modem" ? chip : [c]));
   const linhas = its.map(({b,i}) => `<tr data-i="${i}">
     <td class="col1">${esc(b.n)}</td>
     ${cols.map(c => {
@@ -2556,9 +2566,10 @@ function tabelaAdm(its){
          Nunca o dado e o olho de "falta" na mesma célula preenchida e completa. */
       /* Tem dado → mostra só o dado. Falta → só o olho vermelho, no lugar do
          traço. Um ou outro, nunca os dois. */
-      if(t) return `<td class="cel-abre" data-olho="${c.c}" data-i="${i}"
+      const k = CHIP_COL[c.c] ? " " + CHIP_COL[c.c] : "";
+      if(t) return `<td class="cel-abre${k}" data-olho="${c.c}" data-i="${i}"
         title="Toque para conferir ou alterar">${esc(t)}</td>`;
-      return `<td class="vazio-olho">${olho(i, c.c, false)}</td>`;
+      return `<td class="vazio-olho${k}">${olho(i, c.c, false)}</td>`;
     }).join("")}
     <td>${btFoto(i, !!b.imgMonitor)}</td>
   </tr>`).join("");
@@ -2566,7 +2577,7 @@ function tabelaAdm(its){
   const completos = its.filter(x => cadastroCompleto(x.b)).length;
   return `<div class="rolagem"><table class="tab">
     <thead><tr>
-      <th class="col1">Nº TV</th>${cols.map(c => `<th>${esc(c.curto)}</th>`).join("")}<th>Foto do monitor</th>
+      <th class="col1">Nº TV</th>${cols.map(c => `<th${CHIP_COL[c.c] ? ` class="${CHIP_COL[c.c]}"` : ""}>${esc(c.curto)}</th>`).join("")}<th>Foto do monitor</th>
     </tr></thead>
     <tbody>${linhas}
       <tr class="tot"><td>Total</td><td colspan="${cols.length+1}">${its.length} ${its.length===1?"bem":"bens"} · ${completos} com cadastro completo · ${its.length-completos} pendentes</td></tr>
@@ -4190,7 +4201,7 @@ function abrirDetalhe(i, col){
    preencher em toda a tabela, e nenhum campo que fique preso aberto. */
 function abrirCampoSimples(i, col){
   const b = BENS[i];
-  const info = COLUNAS_CADASTRO.find(x => x.c === col);
+  const info = TODAS_AS_COLUNAS.find(x => x.c === col);
   if(!b || !info || DETALHAVEIS[col]) return;
   detIdx = i; detCol = col;
   rascunhoFoto = {};
@@ -4202,7 +4213,7 @@ function abrirCampoSimples(i, col){
     : col === "fotoMonitor"
     ? `<select id="d_simples">${opcoes(["","SIM","NÃO"], v)}</select>`
     : `<input id="d_simples" value="${esc(v)}" placeholder="—" autocomplete="off"
-         inputmode="${col === "onibus" ? "numeric" : "text"}">`;
+         inputmode="${col === "onibus" || col === "telChip" ? "numeric" : "text"}">`;
 
   const dica = col === "onibus"
     ? `O número vai como está escrito no ônibus, com o zero da frente. Cada empresa
@@ -4210,6 +4221,10 @@ function abrirCampoSimples(i, col){
     : col === "empresa"
     ? `Escolha a empresa do ônibus. Preenchendo o Nº ônibus primeiro, a empresa
        costuma vir sozinha.`
+    : col === "telChip"
+    ? `O número de telefone do chip que está no modem desta TV.`
+    : col === "iccid"
+    ? `O ICCID é o número gravado no próprio chip.`
     : `O tombo é o número do bem no patrimônio da VTM.`;
 
   $("#detSub").textContent = `TV ${b.n}` + (b.onibus ? ` · ônibus ${b.onibus}` : "");

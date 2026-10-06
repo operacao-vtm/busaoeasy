@@ -1279,7 +1279,7 @@ html[data-tema="escuro"] .bt-foto.vazio{color:#FF8A6B}
     <div class="lista" id="lista"></div>
   </section>
 
-  <p class="rodape-versao">BusaoEasy 8.1 · build 28</p>
+  <p class="rodape-versao">BusaoEasy 8.1 · build 29</p>
 </main>
 
 <div class="telao" id="telao">
@@ -1817,6 +1817,157 @@ function arrumarOnibus(){
   });
 }
 
+/* ============================================================
+   FOTOS ESPERANDO INTERNET
+   Uma noite de campo são 10 a 15 ônibus, alguns com 2 telas, e cada TV
+   pode ter várias fotos. A memória comum do navegador (localStorage)
+   aguenta umas 20 fotos. Por isso a foto tirada no aparelho vai para o
+   IndexedDB, que guarda centenas, e no localStorage fica só a marca
+   "idb:<chave>". Ao abrir o sistema, a foto volta de lá.
+   Segurança: a marca só substitui a foto depois que o IndexedDB confirmou
+   a gravação. Até lá, a foto continua guardada inteira, como antes.
+   Quando a foto sobe para o Drive, ela vira endereço e sai do aparelho.
+   ============================================================ */
+const FotosAparelho = (() => {
+  const PREFIXO = "idb:";
+  const CAMPOS_BEM = ["imgMonitor", "imgMonitor2"];
+  const CAMPOS_OC  = ["imgServico", "imgEtqDefeito", "imgEtqSubstituto"];
+  let db = null;
+  let restaurado = false;
+  const confirmadas = new Map();   // chave → foto já confirmada no IndexedDB
+  const gravando = new Set();      // chaves com gravação em andamento
+  let marcarDepois = null;
+
+  const aberto = new Promise(res => {
+    try{
+      const rq = indexedDB.open("vtm_tvbusao_fotos", 1);
+      rq.onupgradeneeded = () => rq.result.createObjectStore("fotos");
+      rq.onsuccess = () => { db = rq.result; res(); };
+      rq.onerror = () => res();
+      rq.onblocked = () => res();
+    }catch(e){ res(); }
+  });
+
+  const chaveBem = (b, c) => `${b.n}|${c}`;
+  const chaveOc  = (b, o, c) => `${b.n}|${o.id}|${c}`;
+
+  function loja(modo){ return db.transaction("fotos", modo).objectStore("fotos"); }
+
+  function gravarNoBanco(chave, foto){
+    if(!db || gravando.has(chave)) return;
+    gravando.add(chave);
+    try{
+      const tx = db.transaction("fotos", "readwrite");
+      tx.objectStore("fotos").put(foto, chave);
+      tx.oncomplete = () => {
+        gravando.delete(chave);
+        confirmadas.set(chave, foto);
+        /* Confirmada: grava de novo, agora só com a marca no lugar da foto. */
+        clearTimeout(marcarDepois);
+        marcarDepois = setTimeout(() => gravar(), 300);
+      };
+      tx.onerror = tx.onabort = () => {
+        gravando.delete(chave);
+        avisar("Memória do aparelho cheia: envie as fotos assim que tiver internet");
+      };
+    }catch(e){ gravando.delete(chave); }
+  }
+
+  /* Troca a foto pela marca só se ela já está confirmada no banco. */
+  function trocar(obj, campo, chave, usadas){
+    const v = obj[campo];
+    if(typeof v !== "string") return v;
+    if(v.startsWith(PREFIXO)){ usadas.add(chave); return v; }
+    if(!v.startsWith("data:")) return v;
+    usadas.add(chave);
+    if(!db) return v;                                // sem IndexedDB: como antes
+    if(confirmadas.get(chave) === v) return PREFIXO + chave;
+    gravarNoBanco(chave, v);
+    return v;                                        // até confirmar, vai inteira
+  }
+
+  /* Cópia do bem para o localStorage. Não mexe no bem que está na tela. */
+  function paraGuardar(b, usadas){
+    let copia = b;
+    CAMPOS_BEM.forEach(c => {
+      const v = trocar(b, c, chaveBem(b, c), usadas);
+      if(v !== b[c]){ if(copia === b) copia = {...b}; copia[c] = v; }
+    });
+    if(Array.isArray(b.ocorrencias) && b.ocorrencias.length){
+      let ocs = null;
+      b.ocorrencias.forEach((o, k) => {
+        let oc = o;
+        CAMPOS_OC.forEach(c => {
+          const v = trocar(o, c, chaveOc(b, o, c), usadas);
+          if(v !== o[c]){ if(oc === o) oc = {...o}; oc[c] = v; }
+        });
+        if(oc !== o){ if(!ocs) ocs = b.ocorrencias.slice(); ocs[k] = oc; }
+      });
+      if(ocs){ if(copia === b) copia = {...b}; copia.ocorrencias = ocs; }
+    }
+    return copia;
+  }
+
+  /* Tira do banco as fotos que já subiram para o Drive ou foram removidas. */
+  function limpar(usadas){
+    if(!db || !restaurado) return;
+    confirmadas.forEach((_, chave) => {
+      if(usadas.has(chave) || gravando.has(chave)) return;
+      confirmadas.delete(chave);
+      try{ loja("readwrite").delete(chave); }catch(e){}
+    });
+  }
+
+  /* Ao abrir: devolve as fotos do banco para o lugar de cada marca. */
+  async function restaurar(){
+    await aberto;
+    const pedidos = [];
+    const pegar = (obj, campo, chave) => {
+      const v = obj[campo];
+      if(typeof v !== "string" || !v.startsWith(PREFIXO)) return;
+      pedidos.push(new Promise(res => {
+        if(!db){ obj[campo] = ""; res(); return; }
+        try{
+          const rq = loja("readonly").get(v.slice(PREFIXO.length));
+          rq.onsuccess = () => {
+            const foto = rq.result;
+            if(typeof foto === "string" && foto.startsWith("data:")){
+              obj[campo] = foto; confirmadas.set(v.slice(PREFIXO.length), foto);
+            } else obj[campo] = "";
+            res();
+          };
+          rq.onerror = () => { obj[campo] = ""; res(); };
+        }catch(e){ obj[campo] = ""; res(); }
+      }));
+    };
+    BENS.forEach(b => {
+      CAMPOS_BEM.forEach(c => pegar(b, c, chaveBem(b, c)));
+      (b.ocorrencias||[]).forEach(o => CAMPOS_OC.forEach(c => pegar(o, c, chaveOc(b, o, c))));
+    });
+    await Promise.all(pedidos);
+    /* Fotos que estavam no banco sem marca (gravação cortada no meio)
+       entram como conhecidas, para a limpeza tirá-las depois. */
+    if(db){
+      await new Promise(res => {
+        try{
+          const rq = loja("readonly").getAllKeys();
+          rq.onsuccess = () => { (rq.result||[]).forEach(k => { if(!confirmadas.has(k)) confirmadas.set(k, null); }); res(); };
+          rq.onerror = () => res();
+        }catch(e){ res(); }
+      });
+    }
+    restaurado = true;
+    return pedidos.length;
+  }
+
+  let pronto = null;
+  return {
+    paraGuardar, limpar,
+    iniciar(){ pronto = restaurar(); return pronto; },
+    get pronto(){ return pronto || Promise.resolve(0); }
+  };
+})();
+
 let avisouCheio = false;
 /* As fotos que já vêm dentro do arquivo (FOTOS_CAMPO) não precisam ser
    guardadas de novo na memória do aparelho — são as mesmas, e juntas passavam
@@ -1825,13 +1976,16 @@ let avisouCheio = false;
    essa é guardada normalmente. */
 function bensParaGuardar(){
   const doArquivo = (typeof FOTOS_CAMPO !== "undefined") ? FOTOS_CAMPO : {};
-  return BENS.map(b => {
+  const usadas = new Set();
+  const lista = BENS.map(b => {
     const igual = doArquivo[String(b.n)] && doArquivo[String(b.n)] === b.imgMonitor;
-    if(!igual) return b;
+    if(!igual) return FotosAparelho.paraGuardar(b, usadas);
     const copia = {...b};
     delete copia.imgMonitor;          // volta do arquivo quando abrir
-    return copia;
+    return FotosAparelho.paraGuardar(copia, usadas);
   });
+  FotosAparelho.limpar(usadas);
+  return lista;
 }
 
 function gravar(){
@@ -2258,6 +2412,9 @@ const Nuvem = {
   },
 
   async sincronizar(aviso){
+    /* Nada sai antes de as fotos guardadas no aparelho voltarem para o lugar:
+       senão a marca "idb:" iria para a base no lugar da foto. */
+    await FotosAparelho.pronto;
     const url = this.endereco;
     if(!url){ this.pintar(); if(aviso) avisar("Configure a conexão com a base primeiro"); return false; }
     if(this.ocupada) return false;
@@ -6163,6 +6320,8 @@ try{
 
 
 carregar();
+/* As fotos guardadas no IndexedDB voltam logo depois de abrir. */
+FotosAparelho.iniciar().then(n => { if(n) redesenhar(); });
 redesenhar();                     /* desenha resumo, mapas, critérios e a lista */
 trocarMostra(mostra, grupoVis);   /* ajusta a barra dos grupos ao modo inicial */
 
@@ -6198,6 +6357,21 @@ if(Nuvem.endereco){
   setInterval(() => { if(!document.hidden) Nuvem.sincronizar(false); }, 20000);
   window.addEventListener("online", () => Nuvem.sincronizar(false));
   document.addEventListener("visibilitychange", () => { if(!document.hidden) Nuvem.sincronizar(false); });
+}
+
+/* Sistema guardado no celular para abrir sem internet. Precisa do arquivo
+   sw.js na mesma pasta do GitHub; sem ele (ou abrindo o arquivo direto do
+   computador), nada muda. Na primeira vez, a própria página entra na cópia,
+   sem esperar a próxima abertura. */
+if("serviceWorker" in navigator && location.protocol === "https:"){
+  navigator.serviceWorker.register("sw.js").then(() => {
+    if(!("caches" in window)) return;
+    caches.open("busaoeasy-pagina").then(c => c.match(location.origin + location.pathname).then(ja => {
+      if(!ja) return fetch(location.pathname, {cache:"force-cache"}).then(r => {
+        if(r.ok) return c.put(location.origin + location.pathname, r);
+      });
+    })).catch(() => {});
+  }).catch(() => {});
 }
 
 // Avisa antes de fechar se ainda há coisa por enviar.

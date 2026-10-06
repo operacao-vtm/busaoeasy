@@ -269,11 +269,27 @@ html.modo-regos .cel .cn-ob{color:#111;opacity:1;font-weight:700}
 .grupo-rot{display:block;font-size:9.5px;font-weight:800;letter-spacing:.1em;
   text-transform:uppercase;color:var(--tinta3);margin:0 15px 5px}
 /* PERFIL OBSERVADOR (VTM leitura): só painel, alternar adm/tec e relatório.
-   Some a busca e a lista editável de baixo; o mapa não abre ficha. */
+   Some a busca e a lista editável de baixo. O quadro abre a ficha só para
+   leitura (dá para ver e copiar, não para alterar), e de dentro dela a
+   diretoria registra o problema. */
 html.perfil-observador .barra{display:none}
 html.perfil-observador #lista{display:none}
 html.perfil-observador .bloco-cab .aba[data-assunto]{}      /* abas ficam: alterna adm/tec */
-html.perfil-observador .mapa .cel{cursor:default}
+html.perfil-observador .mapa .cel{cursor:pointer}
+/* Ficha só para leitura: some o que grava, troca foto ou apaga. Imprimir e
+   WhatsApp ficam — não alteram nada. */
+html.perfil-observador #btSalvar,
+html.perfil-observador #btEditarFicha,
+html.perfil-observador #btExcluirFicha,
+html.perfil-observador #fichaCorpo .foto-bts,
+html.perfil-observador #fichaCorpo .campo .dica,
+html.perfil-observador #fichaCorpo .tirar-oc,
+html.perfil-observador #fichaCorpo .tirar-item,
+html.perfil-observador #fichaCorpo #btMaisItem,
+html.perfil-observador #btSalvarDet,
+html.perfil-observador #btLimparDet{display:none!important}
+#btRegProblema{display:none}
+html.perfil-observador #btRegProblema{display:block}
 html.perfil-observador .mapa .cel:hover,
 html.perfil-observador .mapa .cel:focus-visible{transform:none;box-shadow:none}
 .duplo .bloco{margin-bottom:0;display:flex;flex-direction:column}
@@ -506,6 +522,10 @@ html[data-tema="escuro"] .tag.pausa{color:#A99BF5}
 .foto-bts .bt{padding:8px 12px;font-size:13px}
 /* As duas etiquetas da substituição são um par: lado a lado ocupam uma faixa
    em vez de duas, e continuam legíveis porque cada uma é só prévia e botão. */
+/* No celular o ICCID (20 dígitos) não cabe em meia linha: ocupa a linha inteira. */
+@media(max-width:559px){
+  .campo.campo-iccid{grid-column:1/-1}
+}
 @media(min-width:560px){
   .troca .campos{grid-template-columns:1fr 1fr}
   .troca .campo.full{grid-column:auto}
@@ -1256,7 +1276,7 @@ html[data-tema="escuro"] .bt-foto.vazio{color:#FF8A6B}
     <div class="lista" id="lista"></div>
   </section>
 
-  <p class="rodape-versao">BusaoEasy 8.1 · build 25</p>
+  <p class="rodape-versao">BusaoEasy 8.1 · build 27</p>
 </main>
 
 <div class="telao" id="telao">
@@ -1269,6 +1289,7 @@ html[data-tema="escuro"] .bt-foto.vazio{color:#FF8A6B}
     </div>
     <div class="ficha-corpo" id="fichaCorpo"></div>
     <div class="ficha-pe">
+      <button class="bt forte" id="btRegProblema">Registrar problema</button>
       <button class="bt forte" id="btSalvar">Salvar</button>
       <button class="bt so-icone" id="btEditarFicha" title="Editar / desfazer" aria-label="Editar / desfazer">
         <svg viewBox="0 0 24 24"><path d="M3 10a7 7 0 0111.9-5L18 8M18 4v4h-4"/><path d="M12 20v-1.5"/><path d="M21 14a7 7 0 01-11.9 5L6 16M6 20v-4h4"/></svg>
@@ -1708,6 +1729,20 @@ function lerPedido(v){
   catch(e){ return null; }
 }
 
+/* Chips levantados na planilha "Controle CHIPS - TVBUSAO" (abas das
+   garagens), ligados à TV pelo Nº ônibus; quando o ônibus tem mais de uma
+   TV, a coluna TELA desempata. Ônibus que não bateram, e recados escritos
+   no lugar do número ("ausente", "Não encontrado..."), ficam em branco,
+   para preencher na ficha. Só entram em campo vazio: o que for digitado
+   na ficha vale mais. */
+const CHIPS_PLANILHA = {"1":{"iccid":"8955 0297 9000 0236633 5","tel":"92982160076"},"2":{"iccid":"8955 0297 9000 0168605 5","tel":"92982160043"},"5":{"iccid":"8955 0297 9000 0236626 9","tel":"92982160075"},"6":{"iccid":"8955 0297 9000 0255846 9","tel":"92981891065"},"7":{"iccid":"8955 0297 9000 0236624 4","tel":"92982160079"},"8":{"iccid":"8955 0297 9000 0236627 7","tel":"92982160064"},"9":{"iccid":"8955 0297 9000 0168585 9","tel":"92982160045"},"10":{"iccid":"8955 0297 9000 0168609 7","tel":"92982160046"},"13":{"iccid":"8955 0297 9000 0228268 0","tel":"92981891073"},"14":{"iccid":"8955 0297 9000 0236593 1","tel":"92981891071"},"15":{"iccid":"8955 0297 9000 0236619 4","tel":"92982160070"},"16":{"iccid":"8955 0297 9000 0228262 3","tel":"92982160074"},"17":{"iccid":"89550534460005538573","tel":"5541988169414"},"18":{"iccid":"8955 0297 9000 0236599 8","tel":"92982160049"},"23":{"iccid":"8955 0297 9000 0225784 9","tel":"92981890997"},"24":{"iccid":"8955 0297 9000 0236620 2","tel":"92982160066"},"25":{"iccid":"8955 0297 9000 0255847 7","tel":"92981891064"},"27":{"iccid":"8955 0297 9000 0236606 1","tel":"92982160071"},"29":{"iccid":"8955 0297 9000 0276926 4","tel":"92981891013"},"30":{"iccid":"8955 0297 9000 0252403 2","tel":"92981891064"},"32":{"iccid":"8955 0297 9000 0236631 9","tel":"92982160068"},"33":{"iccid":"8955 0297 9000 0227840 7","tel":"92981890885"},"34":{"iccid":"8955 0297 9000 0225771 6","tel":"92981890959"},"35":{"iccid":"8955 0297 9000 0227838 1","tel":"92981890870"},"36":{"iccid":"8955 0297 9000 0225757 5","tel":"92981890835"},"37":{"iccid":"8955 0297 9000 0241675 9","tel":"92982160073"},"38":{"iccid":"8955 0297 9000 0225765 8","tel":"92981890894"},"39":{"iccid":"8955 0297 9000 0225745 0","tel":"92981890857"},"40":{"iccid":"8955 0297 9000 0227841 5","tel":"92981890886"},"44":{"iccid":"8955 0297 9000 0241596 7","tel":"92981891028"},"45":{"iccid":"8955 0297 9000 0225755 9","tel":"92981890888"},"47":{"iccid":"8955 0297 9000 0225756 7","tel":"92981890834"},"48":{"iccid":"8955 0297 9000 0255874 1","tel":"92981891058"},"49":{"iccid":"8955 0297 9000 0168582 6","tel":"92982160033"},"51":{"iccid":"8955 0297 9000 0225744 3","tel":"92981890852"},"52":{"iccid":"8955 0297 9000 0225754 2","tel":"92981890840"},"53":{"iccid":"8955 0297 9000 0225749 2","tel":"92981890879"},"54":{"iccid":"8955 0297 9000 0225783 1","tel":"92981890998"},"55":{"iccid":"8955 0297 9000 0227837 3","tel":"92981891018"},"57":{"iccid":"8955 0297 9000 0225767 4","tel":"92981890892"},"67":{"iccid":"8955 0297 9000 0241677 5","tel":"92981910086"},"69":{"iccid":"8955 0297 9000 0225788 0","tel":"92981890922"},"70":{"iccid":"8955 0297 9000 0241599 1","tel":"92981891024"},"71":{"iccid":"8955 0297 9000 0227825 8","tel":"92981890942"},"72":{"iccid":"8955 0297 9000 0241604 9","tel":"92981891049"},"73":{"iccid":"8955 0297 9000 0225766 6","tel":"92981890890"},"74":{"iccid":"8955 0297 9000 0225782 3","tel":"92981890963"},"75":{"iccid":"8955 0297 9000 0276920 7","tel":"92981891050"},"76":{"iccid":"8955 0297 9000 0227833 2","tel":"92981891010"},"77":{"iccid":"8955 0297 9000 0225750 0","tel":"92981890878"},"78":{"iccid":"8955 0297 9000 0225780 7","tel":"92981890974"},"79":{"iccid":"8955 0297 9000 0241599 1","tel":"92981891024"},"81":{"iccid":"8955 0297 9000 0227822 5","tel":"92981890937"},"82":{"iccid":"8955 0297 9000 175840 9","tel":"92981891044"},"83":{"iccid":"8955 0297 9000 0276923 1","tel":"92981891060"},"84":{"iccid":"8955 0297 9000 0227827 4","tel":"92981890948"},"85":{"iccid":"8955 0297 9000 0225777 3","tel":"92981890990"},"86":{"iccid":"8955 0297 9000 0225778 1","tel":"92981890985"},"88":{"iccid":"8955 0297 9000 0253766 1","tel":"92981584194"},"89":{"iccid":"8955 0297 9000 0225760 9","tel":"92981890900"},"90":{"iccid":"8955 0297 9000 0253774 5","tel":"92981584190"},"91":{"iccid":"8955 0297 9000 0241658 5","tel":"92981584204"},"92":{"iccid":"8955 0297 9000 0225773 2","tel":"92981890929"},"93":{"iccid":"8955 0297 9000 0225758 3","tel":"92981890906"},"94":{"iccid":"8955 0297 9000 0225776 5","tel":"92981890935"},"95":{"iccid":"895502979000 0241608 0","tel":"92981891026"},"96":{"iccid":"8955 0297 9000 0241854 4","tel":""},"97":{"iccid":"8955 0297 9000 0241598 3","tel":"92981891023"},"98":{"iccid":"8955 0297 9000 0225790 6","tel":"92981890919"},"99":{"iccid":"8955 0297 9000 0225768 2","tel":"92981890960"},"102":{"iccid":"8955 0297 9000 0227829 0","tel":"92981891002"},"103":{"iccid":"8955 0297 9000 0241655 1","tel":"92981910115"},"104":{"iccid":"8955 0297 9000 0227831 6","tel":"92981891007"},"106":{"iccid":"8955 0297 9000 0225786 4","tel":"92981890993"},"108":{"iccid":"8955 0297 9000 0253776 0","tel":"92981910074"},"109":{"iccid":"8955 0534 4600 0553883 9","tel":"5541988107319"},"110":{"iccid":"8955 0297 9000 0253775 2","tel":"92981584197"},"111":{"iccid":"89550534460005538748","tel":"5541988181309"},"112":{"iccid":"8955 0297 9000 0253770 3","tel":"92981910092"},"113":{"iccid":"8955 0297 9000 0133475 5","tel":""},"114":{"iccid":"8955 0534 4600 0553878 9","tel":"5541988202229"},"115":{"iccid":"8955 0297 9000 0231309 7","tel":"92981910094"},"116":{"iccid":"8955 0534 4600 0553880 5","tel":"5541988014781"},"117":{"iccid":"8955 0534 4600 0553843 3","tel":"5541988129290"},"118":{"iccid":"8955 0297 9000 0231311 3","tel":"92981910050"},"119":{"iccid":"8955 0534 4600 0553825 0","tel":"5541988197379"},"120":{"iccid":"8955 0534 4600 0553844 1","tel":"5541988109743"},"121":{"iccid":"8955 0297 9000 0253769 5","tel":"92981910110"},"123":{"iccid":"8955 0534 4600 0553845 8","tel":"5541988203048"},"124":{"iccid":"8955 0534 4600 0553858 1","tel":"5541988205806"},"126":{"iccid":"8955 0297 9000 0241683 3","tel":"92981488549"},"127":{"iccid":"9855 0297 9000 0175810 2","tel":""},"128":{"iccid":"8955 0297 9000 0253767 9","tel":"92981910107"},"129":{"iccid":"8955 0534 4600 0553879 7","tel":"5541988201876"},"130":{"iccid":"8955 0297 9000 0175818 5","tel":""},"131":{"iccid":"8955 0534 4600 0553841 7","tel":"5541988200088"},"134":{"iccid":"8955 0297 9000 0255872 5","tel":"92981891056"},"136":{"iccid":"89550534460005538243","tel":"5541987092858"},"137":{"iccid":"8955 0297 9000 0257294 0","tel":"92981890830"},"138":{"iccid":"8955 0297 9000 0241679 1","tel":"92981910103"},"139":{"iccid":"8955 0297 9000 0274316 0","tel":"92981891001"},"140":{"iccid":"8955 0297 9000 0241682 5","tel":"92981584192"},"142":{"iccid":"8955 0297 9000 0262075 6","tel":"92981890880"},"143":{"iccid":"8955 0297 9000 0262077 2","tel":"92981890931"},"145":{"iccid":"8955 0297 9000 0262073 1","tel":"92982160065"},"146":{"iccid":"8955 0297 9000 0225790 6","tel":"92981890915"},"147":{"iccid":"89550534460005538292","tel":"5541987384251"},"148":{"iccid":"8955 0297 9000 0168608 9","tel":"92982160028"},"149":{"iccid":"8955 0297 9000 0262076 4","tel":"92981584219"},"150":{"iccid":"8955 0297 9000 0262080 6","tel":"92981891067"},"151":{"iccid":"8955 0297 9000 0255871 7","tel":"92981891053"},"152":{"iccid":"8955 0297 9000 0262074 9","tel":"92982160048"}};
+function chipsDaPlanilha(b){
+  const c = CHIPS_PLANILHA[String(b.n)];
+  if(!c) return;
+  if(!String(b.iccid||"").trim())   b.iccid   = c.iccid;
+  if(!String(b.telChip||"").trim()) b.telChip = c.tel;
+}
+
 function bemNovo(f){
   return {
     n:String(f.n||""),
@@ -1720,6 +1755,8 @@ function bemNovo(f){
     inversor:f.inversor||"",
     fotoMonitor: (typeof FOTOS_CAMPO !== "undefined" && FOTOS_CAMPO[String(f.n||"")]) ? "SIM" : (f.foto||""),
     linha:f.linha||"",
+    iccid:(CHIPS_PLANILHA[String(f.n||"")]||{}).iccid||"",
+    telChip:(CHIPS_PLANILHA[String(f.n||"")]||{}).tel||"",
     imgMonitor: (typeof FOTOS_CAMPO !== "undefined" && FOTOS_CAMPO[String(f.n||"")]) || "",
     imgMonitor2: f.imgMonitor2 || "",
     ocorrencias:[]
@@ -1751,6 +1788,7 @@ function carregar(){
             if(!b.imgMonitor && FOTOS_CAMPO[String(b.n)]) b.imgMonitor = FOTOS_CAMPO[String(b.n)];
           });
         }
+        BENS.forEach(chipsDaPlanilha);
         if(d.marca) Nuvem.marca = d.marca;
         if(Array.isArray(d.fila)) Nuvem.fila = new Set(d.fila);
         /* Só troca se a memória tiver gente: lista vazia não pode apagar o
@@ -1838,7 +1876,9 @@ const COLUNAS_CADASTRO = [
    guardadas, editáveis na ficha e presentes no CSV, na sincronização e nos
    relatórios. Só deixaram de contar para o cadastro estar completo. */
 const COLUNAS_GUARDADAS = [
-  {c:"linha", r:"Nº linha", curto:"Nº linha"}
+  {c:"linha", r:"Nº linha", curto:"Nº linha"},
+  {c:"iccid",   r:"ICCID do chip",    curto:"ICCID"},
+  {c:"telChip", r:"Telefone do chip", curto:"Tel. chip"}
 ];
 const TODAS_AS_COLUNAS = COLUNAS_CADASTRO.concat(COLUNAS_GUARDADAS);
 
@@ -2071,6 +2111,9 @@ const Nuvem = {
       b.det = lerDet(rb.det);
       b.cadastradoPor = rb.cadastradoPor||"";
       b.atualizadoEm = rb.atualizadoEm||"";
+      /* A base pode chegar sem o chip (coluna ainda vazia): o da planilha
+         de chips volta, como acontece ao abrir o painel. */
+      chipsDaPlanilha(b);
       mudou = true;
     });
 
@@ -2911,7 +2954,7 @@ function abrirFicha(i, contexto){
                 aria-label="Registro do ${esc(DETALHAVEIS[c.c])}">
                 <svg viewBox="0 0 24 24"><path d="M1.6 12S5.5 5 12 5s10.4 7 10.4 7-3.9 7-10.4 7S1.6 12 1.6 12z"/><circle cx="12" cy="12" r="3"/></svg>
               </button></span></div>`;
-          return `<div class="campo"><label>${esc(c.r)}</label><input id="f_${c.c}" value="${esc(b[c.c]||"")}" placeholder="—" autocomplete="off"></div>`;
+          return `<div class="campo${c.c === "iccid" ? " campo-iccid" : ""}"><label>${esc(c.r)}</label><input id="f_${c.c}" value="${esc(b[c.c]||"")}" placeholder="—" autocomplete="off"></div>`;
         }).join("")}
         ${blocoFoto("monitor", b.imgMonitor||"", "Foto 1 · frente do monitor")}
         ${blocoFoto("monitor2", b.imgMonitor2||"", "Foto 2 · etiqueta traseira")}
@@ -3005,8 +3048,27 @@ function abrirFicha(i, contexto){
 
   pintarEditar();
   pintarEditar();
+  if(ehObservador()) soLeitura("#fichaCorpo");
   $("#telao").classList.add("on");
   document.body.style.overflow = "hidden";
+}
+
+/* Diretoria (Observador): vê tudo, copia, não altera. */
+function ehObservador(){ return !!(QUEM && QUEM.perfil === "Observador"); }
+
+/* Deixa a ficha só para leitura. Texto continua selecionável para copiar;
+   a lista de opções vira texto, porque lista travada não deixa copiar. */
+function soLeitura(sel){
+  const raiz = $(sel);
+  if(!raiz) return;
+  raiz.querySelectorAll("input, textarea").forEach(el => { el.readOnly = true; });
+  raiz.querySelectorAll("select").forEach(s => {
+    const t = document.createElement("input");
+    t.readOnly = true;
+    t.value = s.selectedIndex >= 0 ? (s.options[s.selectedIndex].text || "") : "";
+    t.placeholder = "—";
+    s.replaceWith(t);
+  });
 }
 
 function fecharFicha(){
@@ -3030,6 +3092,7 @@ function salvarSilencioso(){
 
 function salvarFicha(){
   if(abertoIdx < 0) return;
+  if(ehObservador()) return;            // diretoria só lê
   const b = BENS[abertoIdx];
   const el = id => $("#"+id);
   const v = id => { const e = el(id); return e ? e.value.trim() : ""; };
@@ -4117,6 +4180,7 @@ function abrirDetalhe(i, col){
     qualquer informação aqui, e vermelho enquanto estiver tudo em branco. Texto em vez de
     foto: assim dá para buscar por fabricante, modelo ou série, e o arquivo não cresce.</p>`;
 
+  if(ehObservador()) soLeitura("#detCorpo");
   $("#telaDet").classList.add("on");
   document.body.style.overflow = "hidden";
 }
@@ -4218,6 +4282,7 @@ function abrirCameraRapida(i){
 }
 
 function salvarDetalhe(){
+  if(ehObservador()) return;            // diretoria só lê
   if(detIdx < 0) return;
   const b = BENS[detIdx];
 
@@ -5921,6 +5986,9 @@ document.addEventListener("click", ev => {
 
   const cel = ev.target.closest(".cel");
   if(cel){
+    /* Diretoria: o quadro abre a ficha administrativa só para leitura, em
+       qualquer modo. O registro de problema fica no botão dentro da ficha. */
+    if(ehObservador()){ abrirFicha(+cel.dataset.i, "adm"); return; }
     const raiz = document.documentElement;
     /* Nos modos Painel e Registro de OS o clique abre a tela enxuta de motivo —
        vale para qualquer perfil, inclusive a diretoria: ela avista um problema
@@ -5928,8 +5996,6 @@ document.addEventListener("click", ev => {
     if(raiz.classList.contains("modo-painel") || raiz.classList.contains("modo-regos")){
       abrirRegistroRapido(+cel.dataset.i); return;
     }
-    /* Fora desses modos, o Observador só olha: não abre ficha para editar. */
-    if(QUEM && QUEM.perfil === "Observador") return;
     abrirFicha(+cel.dataset.i, cel.closest("#mapaTec") ? "tec" : "adm"); return;
   }
 
@@ -5956,6 +6022,12 @@ document.addEventListener("click", ev => {
 
   if(ev.target.closest("#btFechar") || ev.target.closest("#btCancelar")){ fecharFicha(); return; }
   if(ev.target.closest("#btSalvar")){ salvarFicha(); return; }
+  if(ev.target.closest("#btRegProblema")){
+    const i = abertoIdx;
+    fecharFicha();
+    if(i >= 0) abrirRegistroRapido(i);
+    return;
+  }
   if(ev.target.id === "telao"){ fecharFicha(); return; }
 });
 

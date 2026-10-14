@@ -224,6 +224,72 @@ html.modo-painel .env{max-width:none}
 /* Acesso travado por link: os itens de troca de modo somem do menu, para a
    pessoa ficar só no modo que recebeu. */
 html.acesso-travado .item-modo{display:none}
+
+/* ============ MODO TV · tela da sala ============
+   Sempre no tema escuro: é a tela que fica ligada na parede. */
+.mtv{position:fixed;inset:0;z-index:300;background:#061418;display:none;place-items:center;overflow:hidden;
+  font-family:"Open Sans",system-ui,-apple-system,"Segoe UI",sans-serif;color:#E6F2F3}
+.mtv.on{display:grid}
+.mtv-palco{width:1920px;height:1080px;position:relative;background:#0B1F24;transform-origin:center;flex:none;overflow:hidden}
+.mtv-palco::before{content:"";position:absolute;left:0;right:0;top:0;height:7px;background:linear-gradient(90deg,#D9538F,#EF4827 45%,#F7962C)}
+.mtv-cab{position:absolute;left:56px;right:56px;top:34px;height:84px;display:flex;align-items:center;gap:28px}
+.mtv-cab .logo-vtm{width:132px;height:48px}
+.mtv-tit{border-left:1px solid #1D4B55;padding-left:28px}
+.mtv-tit h2{font-size:44px;font-weight:800;line-height:1;color:#fff;letter-spacing:-.01em;margin:0;padding:0}
+.mtv-tit div{font-size:18px;color:#7FA3A8;margin-top:8px}
+.mtv-dir{margin-left:auto;display:flex;align-items:center;gap:26px}
+.mtv-relogio{font-size:52px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums}
+.mtv-sinal{display:flex;align-items:center;gap:12px;border:1px solid #1D4B55;background:#0E2E35;border-radius:999px;
+  padding:10px 20px 10px 14px;font-size:19px;color:#A9C7CB;min-width:300px}
+.mtv-sinal.erro{color:#FF8A6B;border-color:#7a2a1c}
+.mtv-anel{width:30px;height:30px;flex:none}
+.mtv-anel circle{fill:none;stroke-width:4}
+.mtv-anel .f{stroke:#1D4B55}
+.mtv-anel .p{stroke:#19C2A8;stroke-linecap:round;transform:rotate(-90deg);transform-origin:center;stroke-dasharray:75.4;stroke-dashoffset:0}
+.mtv-sair{width:52px;height:52px;border-radius:14px;border:1px solid #1D4B55;background:#0E2E35;color:#A9C7CB;font-size:26px;cursor:pointer}
+.mtv-sair:hover{background:#123840;color:#fff}
+.mtv-mapa{position:absolute;left:56px;top:150px;width:1300px}
+.mtv-grade{display:grid;grid-template-columns:repeat(20,1fr);gap:8px}
+.mtv-t{aspect-ratio:1;border-radius:8px;background:#0E9F6E;display:grid;place-items:center;position:relative;
+  font-weight:700;font-size:20px;color:rgba(255,255,255,.92);transition:background-color .5s ease}
+.mtv-t.sem{background:#14424B;color:#7FA3A8}
+.mtv-t.prob{background:#EF4827;animation:mtvV 1.6s ease-in-out infinite}
+.mtv-t.mat{background:#0A8D96;animation:mtvA 1.6s ease-in-out infinite}
+@keyframes mtvV{0%,100%{box-shadow:0 0 0 0 rgba(239,72,39,0)}50%{box-shadow:0 0 22px 6px rgba(239,72,39,.75)}}
+@keyframes mtvA{0%,100%{box-shadow:0 0 0 0 rgba(6,214,224,0)}50%{box-shadow:0 0 22px 6px rgba(6,214,224,.8)}}
+.mtv-t.agora{outline:4px solid #fff;outline-offset:3px;z-index:2}
+@media (prefers-reduced-motion:reduce){.mtv-t.prob,.mtv-t.mat{animation:none}
+  .mtv-t.prob{box-shadow:0 0 0 3px rgba(239,72,39,.6)} .mtv-t.mat{box-shadow:0 0 0 3px rgba(6,214,224,.6)}}
+.mtv-leg{display:flex;gap:34px;margin-top:26px;font-size:20px;color:#A9C7CB}
+.mtv-leg span{display:flex;align-items:center;gap:12px}
+.mtv-leg i{width:24px;height:24px;border-radius:6px;background:#0E9F6E}
+.mtv-leg i.v{background:#EF4827;box-shadow:0 0 10px 2px rgba(239,72,39,.6)}
+.mtv-leg i.a{background:#0A8D96;box-shadow:0 0 10px 2px rgba(6,214,224,.7)}
+.mtv-leg i.s{background:#14424B}
+.mtv-lado{position:absolute;right:56px;top:150px;width:470px;bottom:56px;display:flex;flex-direction:column;gap:22px}
+.mtv-gar{background:#123840;border:1px solid #1D4B55;border-radius:18px;padding:26px 30px;position:relative;overflow:hidden}
+.mtv-gar::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:#19C2A8}
+.mtv-gar .rot{font-size:19px;color:#A9C7CB}
+.mtv-gar .nome{font-size:72px;font-weight:800;line-height:1;color:#fff;margin:10px 0 8px;letter-spacing:-.02em}
+.mtv-gar .nome.vazio{font-size:40px;color:#7FA3A8}
+.mtv-gar .det{font-size:20px;color:#A9C7CB}
+.mtv-gar .det b{color:#E6F2F3}
+.mtv-cont{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.mtv-cont div{background:#0E2E35;border:1px solid #1D4B55;border-radius:14px;padding:16px 18px}
+.mtv-cont b{display:block;font-size:54px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.mtv-cont span{font-size:17px;color:#A9C7CB}
+.mtv-cont .k b{color:#3DD39B} .mtv-cont .v b{color:#FF6B4A} .mtv-cont .a b{color:#06D6E0}
+.mtv-feed{background:#0E2E35;border:1px solid #1D4B55;border-radius:18px;padding:22px 26px;flex:1;overflow:hidden}
+.mtv-feed h3{font-size:19px;font-weight:600;color:#A9C7CB;margin:0 0 14px}
+.mtv-feed ul{list-style:none;margin:0;padding:0}
+.mtv-feed li{display:grid;grid-template-columns:16px 1fr auto;gap:14px;align-items:baseline;padding:12px 0;border-top:1px solid #1D4B55}
+.mtv-feed li:first-child{border-top:0}
+.mtv-feed li i{width:12px;height:12px;border-radius:50%;background:#0E9F6E}
+.mtv-feed li i.prob{background:#EF4827} .mtv-feed li i.mat{background:#06D6E0}
+.mtv-feed .o{font-size:20px;color:#E6F2F3}
+.mtv-feed .o small{display:block;font-size:16px;color:#7FA3A8;margin-top:2px}
+.mtv-feed .h{font-size:16px;color:#7FA3A8;font-variant-numeric:tabular-nums;white-space:nowrap}
+.mtv-feed .nada{font-size:19px;color:#7FA3A8;border:0}
 .op-acesso{width:100%;text-align:left;justify-content:flex-start}
 html.acesso-travado #menu hr:first-of-type{display:none}
 html.modo-painel .grupos-vis{display:none}
@@ -1153,6 +1219,7 @@ html[data-tema="escuro"] .bt-foto.vazio{color:#FF8A6B}
       <button data-a="modoTEC"><svg viewBox="0 0 24 24"><path d="M3 8a2 2 0 012-2h2l1.5-2h7L17 6h2a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><circle cx="12" cy="13" r="3"/></svg>Modo Técnico · TV e ônibus</button>
       <button data-a="modoPainel"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M7 9h4M7 13h7"/></svg>Modo Painel</button>
       <button data-a="modoRegOS"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>Modo Registro de OS</button>
+      <button data-a="modoTV"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/><circle cx="17.5" cy="8.5" r="1.3"/></svg>Modo TV · tela da sala</button>
     </div>
     <button type="button" class="menu-grupo" data-grupo="g1">
       <span>Relatórios</span>
@@ -1279,7 +1346,7 @@ html[data-tema="escuro"] .bt-foto.vazio{color:#FF8A6B}
     <div class="lista" id="lista"></div>
   </section>
 
-  <p class="rodape-versao">BusaoEasy 8.1 · build 31</p>
+  <p class="rodape-versao">BusaoEasy 8.1 · build 32</p>
 </main>
 
 <div class="telao" id="telao">
@@ -3237,6 +3304,213 @@ function abrirFicha(i, contexto){
   $("#telao").classList.add("on");
   document.body.style.overflow = "hidden";
 }
+
+/* ============================================================
+   MODO TV · tela da sala
+   As 200 TVs em tela cheia, conferindo a planilha a cada 5 segundos.
+   Vermelho brilhando: problema aberto. Azul brilhando: pedido de material
+   em aberto (o mesmo azul do ponto de compra). Verde: tudo ok.
+   À direita, a última garagem visitada pela Carlene: a empresa do ônibus
+   da última TV que ela alterou, e as últimas atualizações dela.
+   Só mostra: nada é gravado por aqui.
+   ============================================================ */
+const ModoTV = (() => {
+  const CICLO = 5000;
+  const TECNICA = "Carlene";
+  let raiz = null, timer = null, quadro = null, ultima = 0, celulas = {};
+
+  const eDela = nome => String(nome||"").trim().toLowerCase() === TECNICA.toLowerCase();
+  const doisDig = v => String(v).padStart(2,"0");
+  function hora(iso){
+    const d = new Date(iso); if(isNaN(d)) return "";
+    const h = doisDig(d.getHours()) + ":" + doisDig(d.getMinutes());
+    const hoje = new Date();
+    return d.toDateString() === hoje.toDateString() ? h : doisDig(d.getDate()) + "/" + doisDig(d.getMonth()+1) + " " + h;
+  }
+
+  function montar(){
+    raiz = document.createElement("div");
+    raiz.className = "mtv"; raiz.id = "modoTV";
+    raiz.setAttribute("role", "dialog"); raiz.setAttribute("aria-label", "Modo TV");
+    raiz.innerHTML = `<div class="mtv-palco" id="mtvPalco">
+      <header class="mtv-cab">
+        <span class="logo-vtm" role="img" aria-label="VTM Mídia"></span>
+        <div class="mtv-tit"><h2>TV Busão ao vivo</h2><div>As 200 TVs da frota, conferidas a cada 5 segundos</div></div>
+        <div class="mtv-dir">
+          <div class="mtv-sinal" id="mtvSinal">
+            <svg class="mtv-anel" viewBox="0 0 30 30" aria-hidden="true"><circle class="f" cx="15" cy="15" r="12"/><circle class="p" id="mtvAnel" cx="15" cy="15" r="12"/></svg>
+            <span id="mtvSinalTxt">Conferindo…</span>
+          </div>
+          <div class="mtv-relogio" id="mtvRelogio">--:--</div>
+          <button type="button" class="mtv-sair" id="mtvSair" title="Sair do Modo TV (Esc)" aria-label="Sair do Modo TV">×</button>
+        </div>
+      </header>
+      <section class="mtv-mapa" aria-label="As 200 TVs">
+        <div class="mtv-grade" id="mtvGrade"></div>
+        <div class="mtv-leg">
+          <span><i></i>Tudo ok</span><span><i class="v"></i>Com problema</span>
+          <span><i class="a"></i>Esperando material</span><span><i class="s"></i>Sem ônibus cadastrado</span>
+        </div>
+      </section>
+      <aside class="mtv-lado">
+        <div class="mtv-gar">
+          <div class="rot">Última garagem visitada pela ${TECNICA}</div>
+          <div class="nome" id="mtvGar">—</div>
+          <div class="det" id="mtvGarDet"></div>
+        </div>
+        <div class="mtv-cont">
+          <div class="k"><b id="mtvOk">0</b><span>tudo ok</span></div>
+          <div class="v"><b id="mtvProb">0</b><span>com problema</span></div>
+          <div class="a"><b id="mtvMat">0</b><span>esperando material</span></div>
+        </div>
+        <div class="mtv-feed"><h3>Últimas atualizações da ${TECNICA}</h3><ul id="mtvFeed"></ul></div>
+      </aside>
+    </div>`;
+    document.body.appendChild(raiz);
+    raiz.querySelector("#mtvSair").addEventListener("click", fechar);
+    raiz.addEventListener("dblclick", telaCheia);
+    window.addEventListener("resize", escala);
+  }
+
+  function escala(){
+    const p = raiz && raiz.querySelector("#mtvPalco");
+    if(p) p.style.transform = "scale(" + Math.min(innerWidth/1920, innerHeight/1080) + ")";
+  }
+
+  function telaCheia(){
+    try{
+      if(document.fullscreenElement) document.exitFullscreen();
+      else if(raiz.requestFullscreen) raiz.requestFullscreen();
+    }catch(e){}
+  }
+
+  function estado(b){
+    const o = ocorrenciaCorrente(b);
+    if(o && pedidoAberto(o)) return "mat";
+    if(o) return "prob";
+    return "ok";
+  }
+
+  /* Atualizações da Carlene: o cadastro que ela salvou por último em cada TV
+     e o último passo dela em cada O.S. */
+  function daTecnica(){
+    const ev = [];
+    BENS.forEach(b => {
+      if(eDela(b.cadastradoPor)) ev.push({t:b.cadastradoPorEm || b.atualizadoEm, b, txt:"Cadastro atualizado", det:"", cor:"ok"});
+      (b.ocorrencias||[]).forEach(o => {
+        if(o.excluida) return;
+        let t = "", txt = "", cor = "prob";
+        if(o.statusAnd === "Encerrada" && eDela(o.encerradaPor)){
+          t = o.encerradaPorEm || o.atualizadoEm; txt = "O.S. encerrada"; cor = "ok";
+        } else if(pedidoAberto(o) && eDela(o.pedido.solicitadoPor)){
+          t = o.pedido.solicitadoEm || o.atualizadoEm; txt = "Material pedido"; cor = "mat";
+        } else if(eDela(o.alteradaPor)){
+          t = o.alteradaPorEm || o.atualizadoEm; txt = o.statusAnd === "Em andamento" ? "O.S. em andamento" : "O.S. atualizada";
+        } else if(eDela(o.abertaPor)){
+          t = o.abertaPorEm || o.criadaEm || o.atualizadoEm; txt = "Problema aberto";
+        }
+        if(t) ev.push({t, b, txt, det:o.nc||"", cor});
+      });
+    });
+    return ev.filter(e => e.t).sort((x,y) => String(y.t).localeCompare(String(x.t)));
+  }
+
+  function pintar(){
+    if(!raiz) return;
+    const ev = daTecnica();
+    const ultimaTV = ev.length ? String(ev[0].b.n) : "";
+    let ok = 0, pr = 0, mt = 0;
+    BENS.forEach(b => {
+      const c = celulas[String(b.n)]; if(!c) return;
+      const e = estado(b), temOnibus = !!String(b.onibus||"").trim();
+      c.classList.toggle("prob", e === "prob");
+      c.classList.toggle("mat",  e === "mat");
+      c.classList.toggle("sem",  e === "ok" && !temOnibus);
+      c.classList.toggle("agora", String(b.n) === ultimaTV);
+      if(e === "prob") pr++; else if(e === "mat") mt++; else if(temOnibus) ok++;
+    });
+    raiz.querySelector("#mtvOk").textContent = ok;
+    raiz.querySelector("#mtvProb").textContent = pr;
+    raiz.querySelector("#mtvMat").textContent = mt;
+
+    const gar = raiz.querySelector("#mtvGar"), det = raiz.querySelector("#mtvGarDet");
+    if(ev.length){
+      const b = ev[0].b;
+      const g = String(b.empresa||"").trim() || empresaDoOnibus(b.onibus) || "Sem garagem";
+      gar.textContent = g; gar.classList.remove("vazio");
+      det.innerHTML = `Ônibus <b>${esc(b.onibus||"—")}</b> · TV <b>${esc(b.n)}</b> · ${esc(hora(ev[0].t))}`;
+    } else {
+      gar.textContent = "Ainda sem registro"; gar.classList.add("vazio");
+      det.textContent = `Aparece aqui quando a ${TECNICA} salvar algo no sistema.`;
+    }
+
+    const feed = raiz.querySelector("#mtvFeed");
+    feed.innerHTML = ev.length ? ev.slice(0,5).map(e => {
+      const b = e.b, g = String(b.empresa||"").trim() || empresaDoOnibus(b.onibus) || "";
+      const sub = [e.det, b.onibus ? "ônibus " + b.onibus : "", g].filter(Boolean).join(" · ");
+      return `<li><i class="${e.cor}"></i><div class="o">TV ${esc(b.n)} · ${esc(e.txt)}<small>${esc(sub)}</small></div><div class="h">${esc(hora(e.t))}</div></li>`;
+    }).join("") : `<li class="nada">Nenhuma atualização da ${TECNICA} ainda.</li>`;
+  }
+
+  async function conferir(){
+    if(!raiz || !raiz.classList.contains("on")) return;
+    if(Nuvem.endereco && !Nuvem.ocupada){ try{ await Nuvem.sincronizar(false); }catch(e){} }
+    ultima = Date.now();
+    pintar();
+  }
+
+  function quadroAnel(){
+    if(!raiz || !raiz.classList.contains("on")) return;
+    const dec = Math.min(Date.now() - ultima, CICLO);
+    raiz.querySelector("#mtvAnel").style.strokeDashoffset = (75.4 * dec / CICLO).toFixed(1);
+    const s = raiz.querySelector("#mtvSinal"), tx = raiz.querySelector("#mtvSinalTxt");
+    const erro = Nuvem.endereco && Nuvem.estado === "erro";
+    s.classList.toggle("erro", !!erro);
+    tx.textContent = erro ? "Sem conexão · tentando de novo"
+      : dec < 900 ? "Atualizado às " + new Date(ultima).toLocaleTimeString("pt-BR")
+      : "Próxima conferência em " + Math.max(1, Math.ceil((CICLO - dec)/1000)) + " s";
+    const d = new Date();
+    raiz.querySelector("#mtvRelogio").textContent = doisDig(d.getHours()) + ":" + doisDig(d.getMinutes());
+    quadro = requestAnimationFrame(quadroAnel);
+  }
+
+  function abrir(){
+    if(!raiz) montar();
+    const grade = raiz.querySelector("#mtvGrade");
+    celulas = {};
+    grade.innerHTML = "";
+    BENS.slice().sort((a,b) => (+a.n||0) - (+b.n||0)).forEach(b => {
+      const c = document.createElement("div");
+      c.className = "mtv-t"; c.textContent = b.n;
+      c.title = "TV " + b.n + (b.onibus ? " · ônibus " + b.onibus : "");
+      grade.appendChild(c); celulas[String(b.n)] = c;
+    });
+    raiz.classList.add("on");
+    document.body.style.overflow = "hidden";
+    escala(); telaCheia();
+    ultima = Date.now(); pintar();
+    conferir();
+    clearInterval(timer); timer = setInterval(conferir, CICLO);
+    cancelAnimationFrame(quadro); quadro = requestAnimationFrame(quadroAnel);
+  }
+
+  function fechar(){
+    if(!raiz) return;
+    raiz.classList.remove("on");
+    clearInterval(timer); timer = null;
+    cancelAnimationFrame(quadro);
+    document.body.style.overflow = "";
+    try{ if(document.fullscreenElement) document.exitFullscreen(); }catch(e){}
+  }
+
+  document.addEventListener("keydown", ev => {
+    if(!raiz || !raiz.classList.contains("on")) return;
+    if(ev.key === "Escape") fechar();
+    else if(ev.key === "f" || ev.key === "F") telaCheia();
+  });
+
+  return {abrir, fechar, pintar};
+})();
 
 /* Diretoria (Observador): vê tudo, copia, não altera. */
 function ehObservador(){ return !!(QUEM && QUEM.perfil === "Observador"); }
@@ -5990,6 +6264,7 @@ document.addEventListener("click", ev => {
     if(a === "modoTEC") escolherModo("tec");
     if(a === "modoPainel") escolherModo("painel");
     if(a === "modoRegOS") escolherModo("regos");
+    if(a === "modoTV") ModoTV.abrir();
     if(a === "logAtividades") abrirLog();
     if(a === "enviarTudo") Nuvem.enviarTudo();
     if(a === "sincronizar") Nuvem.sincronizar(true);

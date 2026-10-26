@@ -1147,6 +1147,71 @@ html[data-tema="escuro"] .bt-foto.vazio{color:#FF8A6B}
 @media(prefers-reduced-motion:reduce){
   #abertura *{animation-duration:.01s!important;animation-delay:0s!important}
 }
+/* ============================================================
+   RELATÓRIO DA SEMANA E DO MÊS (build 33)
+   ============================================================ */
+@media(min-width:760px){#telaRelPer .ficha.ficha-rel{width:1060px;max-width:96vw}}
+#telaRelPer .abas{margin:10px 16px 0;flex:0 0 auto}
+#telaRelPer .ficha-pe .bt{display:flex;align-items:center;justify-content:center;gap:8px;flex:1 1 0}
+#telaRelPer .ficha-pe .bt svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.rp-cab{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin:0 0 12px}
+.rp-cab h2{margin:0;font-size:18px;font-weight:800;letter-spacing:-.02em}
+.rp-cab .per{font-size:13px;color:var(--tinta2);font-variant-numeric:tabular-nums}
+.rp-cab .per b{color:var(--tinta)}
+.rp-cab .and{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;background:rgba(247,150,44,.16);color:#B26A0C}
+html[data-tema="escuro"] .rp-cab .and{color:#FBBF5C}
+table.rp{border-collapse:collapse;width:100%;font-size:12.5px}
+table.rp th{background:var(--carta2);padding:8px 9px;font-size:9.5px;font-weight:800;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--tinta3);border-bottom:1px solid var(--borda);text-align:center;white-space:nowrap}
+table.rp td{padding:8px 9px;border-bottom:1px solid var(--borda);text-align:center;font-variant-numeric:tabular-nums;white-space:nowrap}
+table.rp th.esq,table.rp td.esq{text-align:left}
+table.rp td.esq{white-space:normal}
+table.rp tr.tot td{background:var(--carta2);font-weight:800}
+table.rp .zero{color:var(--tinta3)}
+table.rp .sub{display:block;font-size:10.5px;color:var(--tinta3);margin:0}
+.rp-barra{display:inline-block;width:70px;height:6px;border-radius:3px;background:var(--borda);vertical-align:middle;margin-right:6px;overflow:hidden}
+.rp-barra i{display:block;height:100%;background:var(--teal,#19C2A8)}
+.rp-mais{color:#0A7D57;font-weight:700}
+html[data-tema="escuro"] .rp-mais{color:#4ADE9E}
+.rp-nota{font-size:11.5px;color:var(--tinta3);margin:6px 2px 0}
+.rp-bts{display:flex;gap:8px;flex-wrap:wrap;padding:0 14px 14px}
+.rp-bts .bt{flex:1 1 200px}
+.rp-lista{display:flex;flex-direction:column;gap:8px;padding:12px 14px 14px}
+.rp-ativ{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:11px 12px;border:1px solid var(--borda);border-radius:10px;background:var(--carta2);cursor:pointer;text-align:left;width:100%}
+.rp-ativ:hover{border-color:var(--borda2)}
+.rp-ativ b{font-size:14px}
+.rp-ativ span{font-size:12px;color:var(--tinta3)}
+.rp-ativ em{font-style:normal;font-weight:800;font-variant-numeric:tabular-nums;align-self:center;grid-row:1/3;grid-column:2}
+.rp-prazo{font-size:12px;font-weight:800;color:var(--tinta2);padding:10px 14px 6px}
+.rp-vazio{font-size:12.5px;color:var(--tinta3);font-style:italic;margin:0 14px 10px}
+.rp-ativs{padding-bottom:6px}
+.rp-email{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--borda);border-radius:10px;background:var(--carta2)}
+.rp-email span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:14px}
+.rp-email .bt{padding:7px 12px;font-size:12.5px}
+.rp-email-novo{display:flex;gap:8px}
+.rp-email-novo input{flex:1;min-width:0;padding:10px 11px;border:1px solid var(--borda);border-radius:9px;background:var(--carta2);font-size:15px}
+.rp-email-novo .bt{flex:0 0 auto}
+.rp-imp{display:none;align-items:center;gap:12px;border-bottom:3px solid #EF4827;padding:0 0 8px;margin:0 0 12px}
+.rp-imp b{font-size:15px}
+.rp-imp span{font-size:11px;color:#64748B}
+.novo-tag{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:99px;font-size:9.5px;font-weight:800;
+  letter-spacing:.04em;background:var(--teal,#19C2A8);color:#0B1F24;text-transform:none;vertical-align:middle}
+@page{size:A4;margin:14mm 12mm}
+@media print{
+  html,html[data-tema="escuro"]{--fundo:#fff;--carta:#fff;--carta2:#F1F5F9;--tinta:#0F172A;--tinta2:#334155;--tinta3:#64748B;--borda:#CBD5E1;--borda2:#94A3B8}
+  body.imprimindo-rp{background:#fff}
+  body.imprimindo-rp>*:not(#telaRelPer){display:none!important}
+  body.imprimindo-rp #telaRelPer{position:static;background:none;backdrop-filter:none;display:block!important}
+  body.imprimindo-rp #telaRelPer .ficha{position:static;transform:none;max-height:none;width:auto;animation:none;border-radius:0;background:#fff}
+  body.imprimindo-rp #telaRelPer .ficha-topo,body.imprimindo-rp #telaRelPer .abas,body.imprimindo-rp #telaRelPer .ficha-pe{display:none!important}
+  body.imprimindo-rp #telaRelPer .ficha-corpo{overflow:visible;padding:0}
+  body.imprimindo-rp #telaRelPer .grupo{break-inside:avoid;overflow:visible;border-left:1px solid var(--borda)!important}
+  body.imprimindo-rp #telaRelPer .rolagem{overflow:visible}
+  body.imprimindo-rp .rp-imp{display:flex!important}
+  body.imprimindo-rp table.rp{font-size:9.5px}
+  body.imprimindo-rp table.rp th,body.imprimindo-rp table.rp td{white-space:normal;padding:5px 6px}
+  body.imprimindo-rp table.rp th{font-size:8px;letter-spacing:.03em}
+}
 </style>
 </head>
 <body>
@@ -1228,6 +1293,7 @@ html[data-tema="escuro"] .bt-foto.vazio{color:#FF8A6B}
     <div class="menu-sub" data-sub="g1">
       <button data-a="relAdm" data-perfis="a t o"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8zm0 0v5h5M9 13h6M9 17h4"/></svg>Relatório · administrativo</button>
       <button data-a="relTec" data-perfis="a t o"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8zm0 0v5h5M9 13h6M9 17h4"/></svg>Relatório · estado técnico</button>
+      <button data-a="relPeriodo" data-perfis="a o"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18M8 14h3M8 17h6"/></svg>Relatório · semana e mês</button>
     </div>
     <button type="button" class="menu-grupo" data-grupo="g2">
       <span>Dados</span>
@@ -1346,7 +1412,7 @@ html[data-tema="escuro"] .bt-foto.vazio{color:#FF8A6B}
     <div class="lista" id="lista"></div>
   </section>
 
-  <p class="rodape-versao">BusaoEasy 8.1 · build 32</p>
+  <p class="rodape-versao">BusaoEasy 8.1 · build 34</p>
 </main>
 
 <div class="telao" id="telao">
@@ -1389,6 +1455,28 @@ html[data-tema="escuro"] .bt-foto.vazio{color:#FF8A6B}
     <div class="ficha-pe">
       <button class="bt" id="btCancelarRel">Cancelar</button>
       <button class="bt forte" id="btGerar">Gerar relatório</button>
+    </div>
+  </div>
+</div>
+
+<!-- Relatório da semana e do mês (build 33) -->
+<div class="telao" id="telaRelPer">
+  <div class="ficha ficha-rel" role="dialog" aria-modal="true">
+    <div class="ficha-topo">
+      <h3><small>Relatório</small><span>Semana e mês</span></h3>
+      <button class="ico" id="btFecharRelPer" aria-label="Fechar">
+        <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="abas" role="group" aria-label="Relatório">
+      <button class="aba" data-rptab="sem" aria-pressed="true">Relatório da semana</button>
+      <button class="aba" data-rptab="mes" aria-pressed="false">Relatório do mês</button>
+      <button class="aba" data-rptab="ativ" aria-pressed="false">Atividades previstas</button>
+    </div>
+    <div class="ficha-corpo" id="rpCorpo"></div>
+    <div class="ficha-pe" id="rpPe">
+      <button class="bt" id="btRpEnviar"><svg viewBox="0 0 24 24"><path d="M4 6h16v12H4zM4 7l8 6 8-6"/></svg>Enviar agora por e-mail</button>
+      <button class="bt forte" id="btRpImprimir"><svg viewBox="0 0 24 24"><path d="M7 9V3h10v6M7 17H5a2 2 0 01-2-2v-4a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2h-2M7 14h10v7H7z"/></svg>Imprimir ou salvar em PDF</button>
     </div>
   </div>
 </div>
@@ -1653,6 +1741,9 @@ const SOL_AGUARDANDO   = "Requisição de material";
 const SOL_ANTIGO_AGUARDANDO = "Aguardando peça";   // nome anterior, ainda no histórico
 const ST_SOLUCAO  = ["", SOL_SUBSTITUICAO, "Manutenção corretiva por conserto",
                      SOL_AGUARDANDO, "Não resolvida"];
+/* Tipo da O.S. (build 33) — é o que separa as linhas dos relatórios da semana e do mês.
+   Mesma lista do REL_TIPOS do bloco do relatório. */
+const TIPOS_OS = ["Troca de material","Troca de chip","Comprovação","Instalação de tela"];
 const CHAVE = "vtm_tvbusao_v1";
 
 /* ------------------------------------------------------------
@@ -1725,6 +1816,10 @@ function gravarConfig(k, v){
    4. ESTADO
    ============================================================ */
 let BENS = [];
+/* Atividades previstas de médio e longo prazo (build 33): aba ATIVIDADES da planilha. */
+let ATIVIDADES = [];
+/* E-mails que recebem o relatório da semana e do mês (build 34): aba EMAILS da planilha. */
+let EMAILS_REL = [];
 /* Pessoas com acesso, já cadastradas no arquivo. O cadastro no menu permite
    acrescentar, mudar senha ou remover depois. A diretoria não entra por aqui:
    usa o link do Modo Painel, que abre sem senha. */
@@ -1878,6 +1973,10 @@ function carregar(){
         BENS.forEach(chipsDaPlanilha);
         if(d.marca) Nuvem.marca = d.marca;
         if(Array.isArray(d.fila)) Nuvem.fila = new Set(d.fila);
+        if(Array.isArray(d.atividades)) ATIVIDADES = d.atividades;
+        if(Array.isArray(d.ativFila)) Nuvem.ativFila = new Set(d.ativFila);
+        if(Array.isArray(d.emails)) EMAILS_REL = d.emails;
+        if(Array.isArray(d.emailFila)) Nuvem.emailFila = new Set(d.emailFila);
         /* Só troca se a memória tiver gente: lista vazia não pode apagar o
            cadastro que vem no arquivo. */
         if(Array.isArray(d.usuarios) && d.usuarios.length) USUARIOS = d.usuarios;
@@ -2075,7 +2174,9 @@ function bensParaGuardar(){
 function gravar(){
   const deu = Cofre.gravar(JSON.stringify({
     versao:1, salvoEm:new Date().toISOString(),
-    marca:Nuvem.marca, fila:[...Nuvem.fila], bens:bensParaGuardar(), usuarios:USUARIOS
+    marca:Nuvem.marca, fila:[...Nuvem.fila], bens:bensParaGuardar(), usuarios:USUARIOS,
+    atividades:ATIVIDADES, ativFila:[...Nuvem.ativFila],
+    emails:EMAILS_REL, emailFila:[...Nuvem.emailFila]
   }));
 
   if(!deu && !avisouCheio){
@@ -2285,6 +2386,8 @@ function comprimirFoto(file, cb){
 const Nuvem = {
   marca: "",           // último instante conhecido da base
   usuariosAlterados: false,
+  ativFila: new Set(), // atividades previstas alteradas aqui e ainda não confirmadas
+  emailFila: new Set(), // e-mails do relatório alterados aqui e ainda não confirmados
   fila: new Set(),     // nº dos bens alterados aqui e ainda não confirmados
   ocupada: false,
   estado: "desligado", // desligado | ok | enviando | fila | erro
@@ -2307,7 +2410,7 @@ const Nuvem = {
       reg.det = b.det ? JSON.stringify(b.det) : "";
       bens.push(reg);
       (b.ocorrencias||[]).forEach(o => ocorrencias.push({
-        id:o.id, bemN:String(b.n), nc:o.nc||"", os:o.os||"",
+        id:o.id, bemN:String(b.n), nc:o.nc||"", os:o.os||"", tipo:o.tipo||"", encerradaPorEm:o.encerradaPorEm||"",
         dataAbertura:o.dataAbertura||"", pri:o.pri||"", solucao:o.solucao||"",
         statusAnd:o.statusAnd||"", statusSol:o.statusSol||"", responsavel:o.responsavel||"",
         dataEncerramento:o.dataEncerramento||"", aguardandoPeca:o.aguardandoPeca?1:0,
@@ -2327,7 +2430,12 @@ const Nuvem = {
                             senha:u.senha||"", excluido:u.excluido?1:0,
                             atualizadoEm:u.atualizadoEm||""}))
       : [];
-    return {bens, ocorrencias, usuarios, desde:this.marca,
+    const atividades = ATIVIDADES.filter(a => this.ativFila.has(a.id)).map(a => ({
+      id:a.id, nome:a.nome||"", prev:a.prev||"", sit:a.sit||"", hist:JSON.stringify(a.hist||[]),
+      criadaPor:a.criadaPor||"", atualizadoEm:a.atualizadoEm||"", prazo:a.prazo||"medio"}));
+    const emails = EMAILS_REL.filter(x => this.emailFila.has(x.id)).map(x => ({
+      id:x.id, email:x.email||"", excluido:x.excluido?1:0, atualizadoEm:x.atualizadoEm||""}));
+    return {bens, ocorrencias, usuarios, atividades, emails, desde:this.marca,
             ficha:(EXIGE_ADMIN && ehAdmin()) ? {nome:QUEM.nome, senha:QUEM.senha||""} : null};
   },
 
@@ -2366,6 +2474,7 @@ const Nuvem = {
       const i = b.ocorrencias.findIndex(x => x.id === ro.id);
       const novo = {
         id:ro.id, nc:ro.nc||"", os:ro.os||"", dataAbertura:ro.dataAbertura||"",
+        tipo:ro.tipo||"", encerradaPorEm:ro.encerradaPorEm||"",
         pri:ro.pri||"Normal", solucao:ro.solucao||"", statusAnd:ro.statusAnd||"Aberta",
         statusSol: (ro.statusSol === SOL_ANTIGO_AGUARDANDO ? SOL_AGUARDANDO : (ro.statusSol||"")),
         responsavel:ro.responsavel||"",
@@ -2412,6 +2521,29 @@ const Nuvem = {
       else if(String(ru.atualizadoEm||"") > String(USUARIOS[i].atualizadoEm||"")){
         USUARIOS[i] = novo; mudou = true;
       }
+    });
+
+    /* Atividades previstas: mais recente vence, igual ao resto. */
+    (resp.atividades||[]).forEach(ra => {
+      if(!ra || !ra.id || this.ativFila.has(String(ra.id))) return;
+      let hist = ra.hist;
+      if(typeof hist === "string"){ try{ hist = JSON.parse(hist || "[]"); }catch(e){ hist = []; } }
+      const novo = {id:String(ra.id), nome:ra.nome||"", prev:String(ra.prev||"").slice(0, 10), sit:ra.sit||"",
+                    hist:Array.isArray(hist) ? hist : [], criadaPor:ra.criadaPor||"", atualizadoEm:ra.atualizadoEm||"",
+                    prazo:ra.prazo === "longo" ? "longo" : "medio"};
+      const i = ATIVIDADES.findIndex(a => a.id === novo.id);
+      if(i < 0){ ATIVIDADES.push(novo); mudou = true; }
+      else if(String(novo.atualizadoEm) > String(ATIVIDADES[i].atualizadoEm||"")){ ATIVIDADES[i] = novo; mudou = true; }
+    });
+
+    /* E-mails do relatório: mais recente vence. */
+    (resp.emails||[]).forEach(re => {
+      if(!re || !re.id || this.emailFila.has(String(re.id))) return;
+      const novo = {id:String(re.id), email:String(re.email||"").trim().toLowerCase(),
+                    excluido: re.excluido==1 || re.excluido===true, atualizadoEm:re.atualizadoEm||""};
+      const i = EMAILS_REL.findIndex(x => x.id === novo.id);
+      if(i < 0){ EMAILS_REL.push(novo); mudou = true; }
+      else if(String(novo.atualizadoEm) > String(EMAILS_REL[i].atualizadoEm||"")){ EMAILS_REL[i] = novo; mudou = true; }
     });
 
     garantirUsuariosBase();
@@ -2483,6 +2615,8 @@ const Nuvem = {
     if(!this.endereco){ avisar("Sem endereço da base"); return; }
     BENS.forEach(b => this.fila.add(String(b.n)));
     this.usuariosAlterados = true;
+    ATIVIDADES.forEach(a => this.ativFila.add(a.id));
+    EMAILS_REL.forEach(x => this.emailFila.add(x.id));
     this.pintar();
     /* Os DADOS vão primeiro, sem esperar as fotos: a planilha se enche em
        segundos. As fotos são muitas e sobem depois, aos poucos, pela
@@ -2508,6 +2642,8 @@ const Nuvem = {
     this.pintar();
 
     const enviados = [...this.fila];
+    const ativEnviadas = [...this.ativFila];
+    const emailsEnviados = [...this.emailFila];
     try{
       await this.subirFotos(url);
       // text/plain evita a verificação prévia do navegador, que o Apps Script não responde.
@@ -2522,6 +2658,8 @@ const Nuvem = {
       if(!resp.ok) throw new Error(resp.erro || "recusado pela base");
 
       enviados.forEach(n => this.fila.delete(n));   // confirmados
+      ativEnviadas.forEach(id => this.ativFila.delete(id));
+      emailsEnviados.forEach(id => this.emailFila.delete(id));
       this.usuariosAlterados = false;
       const mudou = this.absorver(resp);
       this.estado = "ok"; this.ultimoErro = "";
@@ -3219,6 +3357,10 @@ function abrirFicha(i, contexto){
       <h4>${nova ? "Registrar não conformidade" : "Não conformidade em aberto"}</h4>
       <div class="campos">
         <div class="campo full">
+          <label>Tipo</label>
+          <select id="o_tipo">${opcoes([""].concat(TIPOS_OS).concat(oc.tipo && TIPOS_OS.indexOf(oc.tipo) < 0 ? [oc.tipo] : []), oc.tipo || "")}</select>
+        </div>
+        <div class="campo full">
           <label>Não conformidade detectada</label>
           <textarea id="o_nc" placeholder="O que está errado. Deixe vazio se o bem está conforme.">${esc(oc.nc)}</textarea>
         </div>
@@ -3606,6 +3748,7 @@ function salvarFicha(){
   const agoraPausada = v("o_stsol") === SOL_AGUARDANDO;
 
   o.nc = nc;
+  o.tipo = v("o_tipo");
   // O.S, data e responsável nascem com a ocorrência e não se editam depois.
   o.os = o.os || proximaOS();
   o.dataAbertura = o.dataAbertura || hoje();
@@ -6259,6 +6402,7 @@ document.addEventListener("click", ev => {
     const a = opc.dataset.a;
     if(a === "relAdm") abrirRelatorio("adm");
     if(a === "relTec") abrirRelatorio("tec");
+    if(a === "relPeriodo") RelPeriodo.abrir();
     if(a === "modoFull") escolherModo("full");
     if(a === "modoVTM") escolherModo("vtm");
     if(a === "modoTEC") escolherModo("tec");
@@ -6597,10 +6741,411 @@ document.addEventListener("keydown", ev => {
     if($("#telaFoto").classList.contains("on")){ $("#telaFoto").classList.remove("on"); return; }
     if($("#telaVisor").classList.contains("on")){ fecharVisor(); return; }
     if($("#telaRel").classList.contains("on")){ fecharRelatorio(); return; }
+    if($("#telaRelPer").classList.contains("on")){ RelPeriodo.fechar(); return; }
     if($("#telao").classList.contains("on")) fecharFicha();
     $("#menu").classList.remove("on");
   }
 });
+
+/* ================================================================
+   BLOCO DO RELATÓRIO DA SEMANA E DO MÊS — BusaoEasy (build 34)
+   Este bloco é IGUAL no painel (index.html) e no Apps Script:
+   a tela e o PDF do e-mail saem do mesmo código.
+   Horários em "hora de Manaus" (UTC-4, sem horário de verão), em ms.
+   - Semanal: sexta 14h → sexta 14h. Na sexta, a semana que fecha às 14h.
+   - Mensal: dia 1º ao último dia; no dia 1º, o mês anterior inteiro.
+   - Quem fez: quem encerrou a O.S. (ou o responsável), reconhecido pelo
+     nome na lista de pessoas, com a equipe dela.
+   ================================================================ */
+var REL_H = 3600000, REL_D = 24 * REL_H;
+var REL_TIPOS = ['Troca de material', 'Troca de chip', 'Comprovação', 'Instalação de tela'];
+var REL_SEM_TIPO = 'Sem tipo';
+var REL_PESSOAS = [{ nome: 'Carlene', equipe: 'Carlene' }, { nome: 'Alexandre', equipe: 'Alexandre' }];
+var REL_EQUIPES = ['Carlene', 'Alexandre'];
+var REL_MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+var REL_DS = ['dom','seg','ter','qua','qui','sex','sáb'];
+
+function relAgora() { return Date.now() - 4 * REL_H; }
+/* Data/hora (texto ISO, data AAAA-MM-DD ou Date da planilha) → hora de Manaus em ms. */
+function relManaus(v) {
+  if (v === null || v === undefined || v === '') return null;
+  if (Object.prototype.toString.call(v) === '[object Date]') return isNaN(v.getTime()) ? null : v.getTime() - 4 * REL_H;
+  var s = String(v), m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
+  if (m) return Date.UTC(+m[1], +m[2] - 1, +m[3]);
+  var t = Date.parse(s);
+  return isNaN(t) ? null : t - 4 * REL_H;
+}
+function relDiaSo(v) {
+  var w = relManaus(v);
+  if (w === null) return null;
+  var d = new Date(w);
+  return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
+}
+function relSemana(t) {
+  var d = new Date(t);
+  var sexta14 = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), 14);
+  var fim = sexta14 + ((5 - d.getUTCDay() + 7) % 7) * REL_D;   // na sexta: fecha às 14h de hoje
+  return { ini: fim - 7 * REL_D, fim: fim, nome: 'Relatório da semana', mes: false };
+}
+function relMes(t) {
+  var d = new Date(t), a = d.getUTCFullYear(), m = d.getUTCMonth();
+  if (d.getUTCDate() === 1) { m--; if (m < 0) { m = 11; a--; } }
+  return { ini: Date.UTC(a, m, 1), fim: Date.UTC(a, m + 1, 1), nome: 'Relatório do mês', mes: true };
+}
+function relZ(n) { return (n < 10 ? '0' : '') + n; }
+function relDia(t) { var d = new Date(t); return relZ(d.getUTCDate()) + '/' + relZ(d.getUTCMonth() + 1) + '/' + d.getUTCFullYear(); }
+function relHora(t) { var d = new Date(t); return relZ(d.getUTCHours()) + ':' + relZ(d.getUTCMinutes()); }
+function relEsc(s) {
+  return String(s === null || s === undefined ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+function relNum(n) { return n ? String(n) : '<span class="zero">0</span>'; }
+function relNorm(t) {
+  return String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+}
+/* Pessoa da lista pelo nome — também nos nomes antigos escritos à mão. */
+function relPessoa(nome) {
+  var n = ' ' + relNorm(nome) + ' ';
+  if (!n.trim()) return null;
+  for (var i = 0; i < REL_PESSOAS.length; i++) {
+    var cheio = relNorm(REL_PESSOAS[i].nome), primeiro = cheio.split(' ')[0];
+    if (n.indexOf(' ' + cheio + ' ') >= 0 || (primeiro && n.indexOf(' ' + primeiro + ' ') >= 0)) return REL_PESSOAS[i];
+  }
+  return null;
+}
+function relEquipeDe(nome) { var p = relPessoa(nome); return p ? p.equipe : '—'; }
+/* Andamento da atividade num instante: último registro até ali (0 se nenhum). */
+function relPctEm(a, t) {
+  var v = 0, hs = a.hist || [];
+  for (var i = 0; i < hs.length; i++) { var w = relManaus(hs[i].em); if (w !== null && w <= t) v = +hs[i].pct || 0; }
+  return v;
+}
+/* Andamento no início do período: último registro antes dele (null = atividade nova). */
+function relPctAntes(a, t) {
+  var v = null, hs = a.hist || [];
+  for (var i = 0; i < hs.length; i++) { var w = relManaus(hs[i].em); if (w !== null && w < t) v = +hs[i].pct || 0; }
+  return v;
+}
+
+/* Monta o relatório. os = [{os, tipo, tv, emp, on, ab, en, por}] (ab/en em hora de Manaus);
+   ativ = [{nome, prev, prazo, sit, hist}]. Devolve o miolo em HTML. */
+function relMonta(p, os, ativ, mostrarAtiv, agoraT) {
+  var e = relEsc, i;
+  var tipoDe = function (o) { return o.tipo || REL_SEM_TIPO; };
+  var dentro = function (t) { return t !== null && t !== undefined && t >= p.ini && t < p.fim; };
+  var semTipo = os.some(function (o) { return !o.tipo; });
+  var linhas = REL_TIPOS.concat(semTipo ? [REL_SEM_TIPO] : []);
+  var abertos = os.filter(function (o) { return dentro(o.ab); });
+  var encerr = os.filter(function (o) { return dentro(o.en); });
+  var emAberto = os.filter(function (o) { return o.en === null || o.en === undefined; });
+  var fimVisto = Math.min(agoraT, p.fim);
+  var andamento = agoraT < p.fim;
+  var noPer = p.mes ? 'no mês' : 'na semana';
+  var dI = new Date(p.ini), dF = new Date(p.fim);
+
+  var perTxt = p.mes
+    ? '<b>' + REL_MESES[dI.getUTCMonth()] + ' de ' + dI.getUTCFullYear() + '</b> · ' + relDia(p.ini) + ' a ' + relDia(p.fim - REL_D)
+    : '<b>' + REL_DS[dI.getUTCDay()] + ' ' + relDia(p.ini) + ' ' + relHora(p.ini) + '</b> até <b>' +
+      REL_DS[dF.getUTCDay()] + ' ' + relDia(p.fim) + ' ' + relHora(p.fim) + '</b>';
+
+  // 1 · resumo por tipo
+  var t1 = '<tr><th class="esq">Tipo</th><th>Abertos no período</th><th>Encerrados no período</th>' +
+    REL_EQUIPES.map(function (q) { return '<th>Encerrados · ' + e(q) + '</th>'; }).join('') + '<th>Em aberto agora</th></tr>';
+  var totA = 0, totE = 0, totX = 0, totQ = {};
+  linhas.forEach(function (t) {
+    var a = abertos.filter(function (o) { return tipoDe(o) === t; }).length;
+    var en = encerr.filter(function (o) { return tipoDe(o) === t; });
+    var x = emAberto.filter(function (o) { return tipoDe(o) === t; }).length;
+    totA += a; totE += en.length; totX += x;
+    var porEq = REL_EQUIPES.map(function (q) {
+      var n = en.filter(function (o) { return relEquipeDe(o.por) === q; }).length;
+      totQ[q] = (totQ[q] || 0) + n; return n;
+    });
+    t1 += '<tr><td class="esq">' + e(t) + (t === REL_SEM_TIPO ? '<span class="sub">O.S. de antes do campo Tipo</span>' : '') +
+      '</td><td>' + relNum(a) + '</td><td>' + relNum(en.length) + '</td>' +
+      porEq.map(function (n) { return '<td>' + relNum(n) + '</td>'; }).join('') + '<td>' + relNum(x) + '</td></tr>';
+  });
+  t1 += '<tr class="tot"><td class="esq">Total</td><td>' + totA + '</td><td>' + totE + '</td>' +
+    REL_EQUIPES.map(function (q) { return '<td>' + (totQ[q] || 0) + '</td>'; }).join('') + '<td>' + totX + '</td></tr>';
+
+  // 2 · quem realizou
+  var t2 = '<tr><th class="esq">Pessoa</th><th class="esq">Equipe</th>' +
+    linhas.map(function (t) { return '<th>' + e(t) + '</th>'; }).join('') + '<th>Total</th></tr>';
+  var nomes = [];
+  encerr.forEach(function (o) { var nm = o.por || 'Não informado'; if (nomes.indexOf(nm) < 0) nomes.push(nm); });
+  var ordem = function (nm) { for (var k = 0; k < REL_PESSOAS.length; k++) if (REL_PESSOAS[k].nome === nm) return k; return 99; };
+  nomes.sort(function (a, b) { return (ordem(a) - ordem(b)) || a.localeCompare(b); });
+  nomes.forEach(function (nm) {
+    var meus = encerr.filter(function (o) { return (o.por || 'Não informado') === nm; });
+    t2 += '<tr><td class="esq">' + e(nm) + '</td><td class="esq">' + e(relEquipeDe(nm)) + '</td>' +
+      linhas.map(function (t) { return '<td>' + relNum(meus.filter(function (o) { return tipoDe(o) === t; }).length) + '</td>'; }).join('') +
+      '<td><b>' + meus.length + '</b></td></tr>';
+  });
+  if (!nomes.length) t2 += '<tr><td class="esq zero" colspan="' + (linhas.length + 3) + '">Ninguém encerrou O.S. no período.</td></tr>';
+  t2 += '<tr class="tot"><td class="esq" colspan="2">Total (cada O.S. uma vez)</td>' +
+    linhas.map(function (t) { return '<td>' + encerr.filter(function (o) { return tipoDe(o) === t; }).length + '</td>'; }).join('') +
+    '<td>' + encerr.length + '</td></tr>';
+
+  // 3 · lista das encerradas
+  var lista = encerr.slice().sort(function (a, b) { return a.en - b.en; });
+  var t3 = '<tr><th>Código</th><th class="esq">Tipo</th><th class="esq">Local</th><th class="esq">Quem fez</th><th class="esq">Equipe</th><th>Encerrada em</th></tr>';
+  t3 += lista.length
+    ? lista.map(function (o) {
+        return '<tr><td><b>' + e(o.os || '—') + '</b></td><td class="esq">' + e(tipoDe(o)) + '</td><td class="esq">TV ' + e(o.tv) +
+          (o.emp ? ' · ' + e(o.emp) : '') + (o.on ? '<span class="sub">ônibus ' + e(o.on) + '</span>' : '') + '</td><td class="esq">' +
+          e(o.por || '—') + '</td><td class="esq">' + e(relEquipeDe(o.por)) + '</td><td>' + relDia(o.en) + ' ' + relHora(o.en) + '</td></tr>';
+      }).join('')
+    : '<tr><td colspan="6" class="zero">Nenhuma O.S. encerrada no período.</td></tr>';
+
+  // 4 · atividades previstas, médio e longo prazo
+  var blocoPrazo = function (prazo, titulo) {
+    var doPrazo = ativ.filter(function (a) { return (a.prazo === 'longo' ? 'longo' : 'medio') === prazo; })
+      .sort(function (a, b) { return String(a.prev || '9999').localeCompare(String(b.prev || '9999')); });
+    var h = '<div class="rp-prazo">' + titulo + '</div>';
+    if (!doPrazo.length) return h + '<p class="rp-vazio">Nenhuma atividade cadastrada.</p>';
+    return h + '<div class="rolagem"><table class="rp"><tr><th class="esq">Atividade</th><th>Previsão</th><th>Andamento</th><th>Evolução ' + noPer +
+      '</th><th class="esq">Situação atual</th></tr>' +
+      doPrazo.map(function (a) {
+        var atual = relPctEm(a, fimVisto), antes = relPctAntes(a, p.ini), pv = relDiaSo(a.prev);
+        var evol = antes === null ? '<span class="rp-mais">Nova ' + noPer + '</span>'
+          : (atual - antes > 0 ? '<span class="rp-mais">+' + (atual - antes) + ' pontos</span><span class="sub">de ' + antes + '% para ' + atual + '%</span>'
+          : (atual - antes < 0 ? (atual - antes) + ' pontos<span class="sub">de ' + antes + '% para ' + atual + '%</span>'
+          : '<span class="zero">Sem avanço</span>'));
+        return '<tr><td class="esq"><b>' + e(a.nome) + '</b></td><td>' + (pv !== null ? relDia(pv) : '—') + '</td><td>' +
+          '<span class="rp-barra"><i style="width:' + Math.min(100, atual) + '%"></i></span>' + atual + '%' +
+          (atual >= 100 ? '<span class="sub">concluída</span>' : '') + '</td><td>' + evol + '</td><td class="esq">' + e(a.sit || '—') + '</td></tr>';
+      }).join('') + '</table></div>';
+  };
+
+  return '' +
+    '<div class="rp-imp"><b>VTM · Painel de Controle TV Busão</b><span>' + e(p.nome) + ' · emitido em ' + relDia(agoraT) + ' ' + relHora(agoraT) + '</span></div>' +
+    '<div class="rp-cab"><h2>' + e(p.nome) + '</h2><span class="per">' + perTxt + '</span>' +
+    (andamento ? '<span class="and">em andamento · dados até ' + relDia(agoraT) + ' ' + relHora(agoraT) + '</span>' : '') + '</div>' +
+    '<div class="grupo" style="--g:var(--marca-b)"><h4>1 · Resumo por tipo de O.S.</h4><div class="rolagem"><table class="rp">' + t1 + '</table></div></div>' +
+    '<div class="grupo" style="--g:var(--marca-c)"><h4>2 · Quem realizou</h4><div class="rolagem"><table class="rp">' + t2 + '</table></div></div>' +
+    '<div class="grupo" style="--g:var(--teal,#19C2A8)"><h4>3 · O.S. encerradas no período (' + lista.length + ')</h4><div class="rolagem"><table class="rp">' + t3 + '</table></div></div>' +
+    (mostrarAtiv ? '<div class="grupo" style="--g:var(--pausa)"><h4>4 · Atividades previstas</h4><div class="rp-ativs">' +
+      blocoPrazo('medio', 'Médio prazo') + blocoPrazo('longo', 'Longo prazo') + '</div></div>' : '');
+}
+
+/* Documento completo para o PDF do e-mail (o Apps Script usa este). */
+function relDocumento(miolo, titulo, agoraT) {
+  return '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><title>' + relEsc(titulo) + '</title><style>' +
+    '@page{size:A4;margin:14mm 12mm}body{font-family:Arial,Helvetica,sans-serif;color:#0F172A;font-size:9.5pt;line-height:1.35;margin:0}' +
+    '.rp-imp{border-bottom:3px solid #EF4827;padding:0 0 6px;margin:0 0 10px}.rp-imp b{font-size:12pt;margin-right:10px}.rp-imp span{font-size:8.5pt;color:#64748B}' +
+    '.rp-cab{margin:0 0 10px}.rp-cab h2{display:inline;font-size:14pt;margin:0 10px 0 0}.rp-cab .per{font-size:9.5pt;color:#334155}' +
+    '.rp-cab .and{display:inline-block;margin-left:8px;font-size:8pt;font-weight:bold;padding:1px 6px;background:#FDEBD3;color:#B26A0C}' +
+    '.grupo{border:1px solid #CBD5E1;margin:0 0 10px;page-break-inside:avoid}' +
+    '.grupo h4{margin:0;padding:6px 8px;font-size:8.5pt;letter-spacing:.08em;text-transform:uppercase;color:#334155;background:#F1F5F9;border-bottom:1px solid #CBD5E1}' +
+    'table.rp{width:100%;border-collapse:collapse}table.rp th{background:#F8FAFC;color:#64748B;font-size:7.5pt;text-transform:uppercase;padding:5px;border-bottom:1px solid #CBD5E1;text-align:center}' +
+    'table.rp td{padding:5px;border-bottom:1px solid #E2E8F0;text-align:center;font-size:9pt;vertical-align:top}' +
+    'table.rp .esq{text-align:left}table.rp tr.tot td{font-weight:bold;background:#F1F5F9}.zero{color:#94A3B8}' +
+    '.sub{display:block;font-size:7.5pt;color:#64748B}.rp-mais{color:#0A7D57;font-weight:bold}.rp-barra{display:none}' +
+    '.rp-prazo{font-weight:bold;font-size:9pt;color:#334155;padding:6px 8px 3px}.rp-vazio{color:#94A3B8;font-style:italic;margin:2px 8px 8px}' +
+    '.rod{margin-top:12px;padding-top:5px;border-top:1px solid #CBD5E1;font-size:7.5pt;color:#94A3B8}' +
+    '</style></head><body>' + miolo +
+    '<div class="rod">Gerado automaticamente pelo BusaoEasy · Painel de Controle TV Busão em ' + relDia(agoraT) + ' ' + relHora(agoraT) + '.</div>' +
+    '</body></html>';
+}
+/* ============ fim do bloco do relatório ============ */
+
+/* ============================================================
+   11.9 RELATÓRIO DA SEMANA E DO MÊS — janela do painel
+   O relatório em si sai do bloco acima (relMonta), o mesmo do
+   Apps Script. Aqui ficam a janela, as atividades previstas, os
+   e-mails que recebem o relatório e o "Enviar agora".
+   ============================================================ */
+const RelPeriodo = (() => {
+  /* Quem cadastra os e-mails do relatório (o perfil mais alto). */
+  const EDITAM_EMAILS = ["Carlos Pontes", "João", "Gustavo"];
+  const PRAZOS = [["medio", "Médio prazo"], ["longo", "Longo prazo"]];
+  const e = relEsc;
+
+  let aba = "sem", editando = null;
+  const ehAdm = () => !(QUEM && QUEM.perfil !== "Administrador");            // administrador (ou ninguém identificado)
+  const veAtiv = () => !ehObservador();                                       // diretoria não vê atividades
+  const editaEmails = () => !!(QUEM && QUEM.perfil === "Administrador" &&
+                               EDITAM_EMAILS.some(n => relNorm(n) === relNorm(QUEM.nome)));
+  const emailsAtivos = () => EMAILS_REL.filter(x => !x.excluido);
+
+  /* O.S. do sistema numa lista simples — o Apps Script monta a mesma lista
+     a partir das abas BENS e OCORRENCIAS. */
+  function coletar(){
+    const lista = [];
+    BENS.forEach(b => (b.ocorrencias||[]).forEach(o => {
+      if(o.excluida) return;
+      const enc = o.statusAnd === "Encerrada";
+      const quem = String(o.encerradaPor || o.responsavel || "").trim();
+      const p = relPessoa(quem);
+      const ab = relManaus(o.criadaEm), en = relManaus(o.encerradaPorEm);
+      lista.push({
+        os: o.os || "", tipo: o.tipo || "", tv: String(b.n), emp: b.empresa || "", on: b.onibus || "",
+        ab: ab !== null ? ab : relManaus(o.dataAbertura),
+        en: enc ? (en !== null ? en : relManaus(o.dataEncerramento)) : null,
+        por: p ? p.nome : quem
+      });
+    }));
+    return lista;
+  }
+
+  /* ---------- aba Atividades previstas (+ e-mails) ---------- */
+  function telaAtividades(){
+    const a = editando ? ATIVIDADES.find(x => x.id === editando) : null;
+    const pct = a ? relPctEm(a, relAgora()) : 0;
+    const prazo = a && a.prazo === "longo" ? "longo" : "medio";
+    const lista = ATIVIDADES.slice().sort((x, y) => (x.prazo === "longo") - (y.prazo === "longo") ||
+                                                     String(x.prev||"9999").localeCompare(String(y.prev||"9999")));
+    const emails = emailsAtivos(), pode = editaEmails();
+    return `
+    <div class="grupo" style="--g:var(--pausa)">
+      <h4>${a ? "Atualizar atividade" : "Nova atividade"}</h4>
+      <div class="campos">
+        <div class="campo full"><label>Atividade</label><input id="at_nome" value="${e(a ? a.nome : "")}" placeholder="O que vai ser feito" autocomplete="off"></div>
+        <div class="tres">
+          <div class="campo"><label>Prazo</label><select id="at_prazo">${PRAZOS.map(([k, r]) => `<option value="${k}"${k === prazo ? " selected" : ""}>${r}</option>`).join("")}</select></div>
+          <div class="campo"><label>Previsão</label><input id="at_prev" type="date" value="${e(a ? a.prev : "")}"></div>
+          <div class="campo"><label>Andamento (%)</label><input id="at_pct" type="number" min="0" max="100" step="5" value="${pct}"></div>
+        </div>
+        <div class="campo full"><label>Situação atual</label><textarea id="at_sit" placeholder="Em que pé está">${e(a ? a.sit : "")}</textarea></div>
+      </div>
+      <div class="rp-bts">
+        ${a ? `<button class="bt" id="at_cancelar">Cancelar</button>` : ""}
+        <button class="bt forte" id="at_salvar">${a ? "Salvar atualização" : "Cadastrar atividade"}</button>
+      </div>
+    </div>
+    <div class="grupo" style="--g:var(--pausa)">
+      <h4>Atividades cadastradas (${ATIVIDADES.length})</h4>
+      <div class="rp-lista">
+        ${lista.length ? lista.map(x => { const pv = relDiaSo(x.prev); return `<button class="rp-ativ" data-ativ="${e(x.id)}"><b>${e(x.nome)}</b><span>${x.prazo === "longo" ? "Longo prazo" : "Médio prazo"} · previsão ${pv !== null ? relDia(pv) : "—"}${x.sit ? ` · ${e(x.sit)}` : ""}</span><em>${relPctEm(x, relAgora())}%</em></button>`; }).join("")
+          : `<p class="rp-nota">Nenhuma atividade cadastrada ainda.</p>`}
+      </div>
+    </div>
+    <p class="rp-nota" style="margin-bottom:14px">Toque numa atividade para atualizar o andamento. Cada atualização fica guardada com a data — é daí que sai a "evolução" dos relatórios.</p>
+    <div class="grupo" style="--g:var(--marca-a)">
+      <h4>E-mails que recebem o relatório (${emails.length})</h4>
+      <div class="rp-lista">
+        ${emails.length ? emails.map(x => `<div class="rp-email"><span>${e(x.email)}</span>${pode ? `<button class="bt perigo" data-tiraemail="${e(x.id)}">Remover</button>` : ""}</div>`).join("")
+          : `<p class="rp-nota">Nenhum e-mail cadastrado.</p>`}
+        ${pode ? `<div class="rp-email-novo"><input id="em_novo" type="email" placeholder="nome@empresa.com" autocomplete="off"><button class="bt forte" id="em_add">Adicionar</button></div>`
+               : `<p class="rp-nota">Só Carlos Pontes, João e Gustavo alteram esta lista.</p>`}
+        <p class="rp-nota">Semanal toda sexta às 14h · mensal todo dia 1º às 8h, com o PDF em anexo.</p>
+      </div>
+    </div>`;
+  }
+
+  function ligarAtividades(){
+    document.querySelectorAll("#rpCorpo [data-ativ]").forEach(b => b.onclick = () => { editando = b.dataset.ativ; desenhar(); });
+    const c = $("#at_cancelar"); if(c) c.onclick = () => { editando = null; desenhar(); };
+    $("#at_salvar").onclick = () => {
+      const nome = $("#at_nome").value.trim(), prev = $("#at_prev").value, prazo = $("#at_prazo").value;
+      const pct = Math.max(0, Math.min(100, Math.round(+$("#at_pct").value || 0)));
+      const sit = $("#at_sit").value.trim();
+      if(!nome || !prev){ avisar("Preencha a atividade e a previsão"); return; }
+      const ag = new Date().toISOString();
+      let id = editando;
+      if(editando){
+        const a = ATIVIDADES.find(x => x.id === editando);
+        if(a){
+          a.nome = nome; a.prev = prev; a.prazo = prazo; a.sit = sit;
+          if(pct !== relPctEm(a, relAgora())) (a.hist = a.hist || []).push({em: ag, pct, por: porQuem()});
+          a.atualizadoEm = ag;
+        }
+        avisar("Atividade atualizada");
+      } else {
+        id = "at_" + Date.now();
+        ATIVIDADES.push({id, nome, prev, prazo, sit, hist: [{em: ag, pct, por: porQuem()}], criadaPor: porQuem(), atualizadoEm: ag});
+        avisar("Atividade cadastrada");
+      }
+      Nuvem.ativFila.add(id);
+      gravar(); editando = null; desenhar();
+      Nuvem.sincronizar(false);
+    };
+    const add = $("#em_add");
+    if(add) add.onclick = () => {
+      const v = $("#em_novo").value.trim().toLowerCase();
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)){ avisar("Esse e-mail não parece válido"); return; }
+      const ag = new Date().toISOString();
+      const ja = EMAILS_REL.find(x => x.email === v);
+      if(ja && !ja.excluido){ avisar("Esse e-mail já está na lista"); return; }
+      let id;
+      if(ja){ ja.excluido = false; ja.atualizadoEm = ag; id = ja.id; }
+      else { id = "em_" + Date.now(); EMAILS_REL.push({id, email: v, excluido: false, atualizadoEm: ag}); }
+      Nuvem.emailFila.add(id);
+      gravar(); desenhar(); avisar("E-mail cadastrado");
+      Nuvem.sincronizar(false);
+    };
+    document.querySelectorAll("#rpCorpo [data-tiraemail]").forEach(b => b.onclick = async () => {
+      const x = EMAILS_REL.find(y => y.id === b.dataset.tiraemail); if(!x) return;
+      if(!await perguntar(`Tirar ${x.email} da lista do relatório?`)) return;
+      x.excluido = true; x.atualizadoEm = new Date().toISOString();
+      Nuvem.emailFila.add(x.id);
+      gravar(); desenhar(); avisar("E-mail removido");
+      Nuvem.sincronizar(false);
+    });
+  }
+
+  function desenhar(){
+    const obs = ehObservador();
+    $('#telaRelPer [data-rptab="ativ"]').style.display = ehAdm() ? "" : "none";
+    if(aba === "ativ" && !ehAdm()) aba = "sem";
+    document.querySelectorAll("#telaRelPer [data-rptab]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.rptab === aba)));
+    $("#rpPe").style.display = aba === "ativ" ? "none" : "";
+    $("#btRpEnviar").style.display = obs ? "none" : "";
+    const corpo = $("#rpCorpo");
+    if(aba === "ativ"){ corpo.innerHTML = telaAtividades(); ligarAtividades(); }
+    else {
+      const t = relAgora();
+      corpo.innerHTML = relMonta(aba === "sem" ? relSemana(t) : relMes(t), coletar(), ATIVIDADES, veAtiv(), t);
+    }
+    corpo.scrollTop = 0;
+  }
+
+  function abrir(){ aba = "sem"; editando = null; desenhar(); $("#telaRelPer").classList.add("on"); document.body.style.overflow = "hidden"; }
+  function fechar(){ $("#telaRelPer").classList.remove("on"); document.body.style.overflow = ""; }
+  function imprimir(){
+    document.body.classList.add("imprimindo-rp");
+    const tira = () => document.body.classList.remove("imprimindo-rp");
+    window.addEventListener("afterprint", tira, {once: true});
+    window.print();
+    setTimeout(tira, 1500);
+  }
+
+  /* Enviar agora: sincroniza primeiro, para o PDF sair com o último dado,
+     e pede à base (Apps Script) que monte e mande o PDF. */
+  let enviando = false;
+  async function enviar(){
+    if(enviando) return;
+    const tipo = aba === "mes" ? "mensal" : "semanal";
+    const nomeRel = tipo === "mensal" ? "relatório do mês" : "relatório da semana";
+    const url = Nuvem.endereco;
+    if(!url){ avisar("Sem conexão com a base: não dá para enviar"); return; }
+    const n = emailsAtivos().length;
+    if(!n){ avisar("Nenhum e-mail cadastrado para receber o relatório"); return; }
+    if(!await dialogo(`Enviar agora o ${nomeRel} em PDF para ${n} ${n === 1 ? "e-mail" : "e-mails"}?`, {sim: "Enviar"})) return;
+    enviando = true;
+    const bt = $("#btRpEnviar"); bt.disabled = true;
+    avisar("Enviando o relatório…");
+    try{ await Nuvem.sincronizar(false); }catch(err){}
+    try{
+      const r = await fetch(url, {method: "POST", headers: {"Content-Type": "text/plain;charset=utf-8"},
+                                  body: JSON.stringify({acao: "enviarRelatorio", tipo}), redirect: "follow"});
+      const resp = await r.json();
+      if(resp.ok){ const q = (resp.enviadoPara || []).length; avisar(`Relatório enviado para ${q} ${q === 1 ? "e-mail" : "e-mails"}`); }
+      else avisar(resp.erro || "A base não conseguiu enviar o relatório");
+    }catch(err){
+      avisar("Sem conexão: o relatório não foi enviado");
+    }finally{ enviando = false; bt.disabled = false; }
+  }
+
+  document.addEventListener("click", ev => {
+    const t = ev.target.closest("[data-rptab]");
+    if(t){ aba = t.dataset.rptab; editando = null; desenhar(); return; }
+    if(ev.target.closest("#btFecharRelPer")){ fechar(); return; }
+    if(ev.target.closest("#btRpImprimir")){ imprimir(); return; }
+    if(ev.target.closest("#btRpEnviar")){ enviar(); return; }
+  });
+
+  return {abrir, fechar, coletar};
+})();
 
 /* ============================================================
    12. PARTIDA

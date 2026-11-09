@@ -1213,6 +1213,7 @@ html[data-tema="escuro"] .rp-mais{color:#4ADE9E}
   body.imprimindo-rp table.rp th{font-size:8px;letter-spacing:.03em}
 }
 </style>
+<style>.modo-tv-link #mtvSair{display:none!important}</style>
 </head>
 <body>
 
@@ -1412,7 +1413,7 @@ html[data-tema="escuro"] .rp-mais{color:#4ADE9E}
     <div class="lista" id="lista"></div>
   </section>
 
-  <p class="rodape-versao">BusaoEasy 8.1 · build 34</p>
+  <p class="rodape-versao">BusaoEasy 8.1 · build 35</p>
 </main>
 
 <div class="telao" id="telao">
@@ -3638,6 +3639,7 @@ const ModoTV = (() => {
 
   function fechar(){
     if(!raiz) return;
+    if(document.documentElement.classList.contains("modo-tv-link")) return;   /* aberto pelo link #tv: a TV fica no Modo TV */
     raiz.classList.remove("on");
     clearInterval(timer); timer = null;
     cancelAnimationFrame(quadro);
@@ -5070,6 +5072,12 @@ function compartilharLinkAcesso(){
 
 function aplicarModoDoLink(){
   const alvo = (location.hash || "").replace("#", "").toLowerCase();
+  /* build 35: #tv abre direto o Modo TV (tela da sala) e trava nele: para a TV box. */
+  if(alvo === "tv"){
+    document.documentElement.classList.add("acesso-travado", "modo-tv-link");
+    setTimeout(() => ModoTV.abrir(), 700);
+    return;
+  }
   const mapa = {
     vtm:      "vtm",
     tecnico:  "tec",   tec: "tec",

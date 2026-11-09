@@ -230,7 +230,7 @@ html.acesso-travado .item-modo{display:none}
 .mtv{position:fixed;inset:0;z-index:300;background:#061418;display:none;place-items:center;overflow:hidden;
   font-family:"Open Sans",system-ui,-apple-system,"Segoe UI",sans-serif;color:#E6F2F3}
 .mtv.on{display:grid}
-.mtv-palco{width:1920px;height:1080px;position:relative;background:#0B1F24;transform-origin:center;flex:none;overflow:hidden}
+.mtv-palco{width:1920px;height:1080px;position:absolute;left:50%;top:50%;background:#0B1F24;transform-origin:center;flex:none;overflow:hidden}
 .mtv-palco::before{content:"";position:absolute;left:0;right:0;top:0;height:7px;background:linear-gradient(90deg,#D9538F,#EF4827 45%,#F7962C)}
 .mtv-cab{position:absolute;left:56px;right:56px;top:34px;height:84px;display:flex;align-items:center;gap:28px}
 .mtv-cab .logo-vtm{width:132px;height:48px}
@@ -3517,7 +3517,7 @@ const ModoTV = (() => {
 
   function escala(){
     const p = raiz && raiz.querySelector("#mtvPalco");
-    if(p) p.style.transform = "scale(" + Math.min(innerWidth/1920, innerHeight/1080) + ")";
+    if(p) p.style.transform = "translate(-50%,-50%) scale(" + Math.min(innerWidth/1920, innerHeight/1080) + ")";
   }
 
   function telaCheia(){

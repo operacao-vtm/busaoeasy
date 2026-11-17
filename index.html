@@ -818,6 +818,46 @@ html[data-tema="escuro"] .pr-ok{color:#4ADE9E}
 .seg.bom[aria-pressed="true"] span,
 .seg.ruim[aria-pressed="true"] span{color:rgba(255,255,255,.82)}
 .cel.fora{opacity:.13;pointer-events:none}
+/* ---- Modo Sistemas de Operação: ponto do sistema (AZ ou VTM) e situação online/offline ---- */
+.sisop-bt{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;border:2px solid #1E3A8A;background:var(--carta);color:#1E3A8A;font-weight:700;font-size:13px;cursor:pointer;align-self:flex-end;font-family:inherit}
+html[data-tema="escuro"] .sisop-bt{color:#9DB4F5;border-color:#9DB4F5}
+html.modo-sisop .sisop-bt{background:#1E3A8A;color:#fff;border-color:#1E3A8A}
+.sisop-bt i{width:12px;height:12px;border-radius:50%;background:#1E3A8A;box-shadow:0 0 0 2px #fff}
+html.modo-sisop .cel{position:relative}
+.cel .sisop-pt{display:none}
+html.modo-sisop .cel .sisop-pt{display:block;position:absolute;top:3px;right:3px;width:11px;height:11px;border-radius:50%}
+.sisop-pt.az{background:#1E3A8A;box-shadow:0 0 0 1.5px rgba(255,255,255,.95)}
+.sisop-pt.vtm{background:#FFFFFF;box-shadow:0 0 0 1.5px #0B1220}
+html.modo-sisop .cel.sisop-off{background-image:repeating-linear-gradient(45deg,rgba(15,20,28,.38) 0 4px,transparent 4px 8px)}
+html.modo-sisop .cel.sisop-alerta{outline:3px solid #DC2626;outline-offset:-1px;animation:sisopPisca 1.2s ease-in-out infinite}
+@keyframes sisopPisca{50%{outline-color:rgba(220,38,38,.25)}}
+@media (prefers-reduced-motion:reduce){html.modo-sisop .cel.sisop-alerta{animation:none}}
+.sisop-legenda{display:none;flex-wrap:wrap;gap:6px 16px;align-items:center;padding:10px 14px;border:1px solid var(--borda);border-radius:10px;background:var(--carta);font-size:13px;color:var(--tinta2);margin:8px 0}
+html.modo-sisop .sisop-legenda{display:flex}
+.sisop-legenda b{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#1E3A8A}
+html[data-tema="escuro"] .sisop-legenda b{color:#9DB4F5}
+.sisop-legenda span{display:inline-flex;align-items:center;gap:6px}
+.sisop-legenda i{width:11px;height:11px;border-radius:50%;display:inline-block}
+.sisop-legenda i.q{width:16px;height:12px;border-radius:3px;background:var(--conforme)}
+.sisop-aviso{display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:10px;background:#FEF2F2;border:1.5px solid #DC2626;color:#7F1D1D;font-weight:600;margin:8px 0}
+.sisop-aviso[hidden]{display:none}
+.sisop-aviso button{margin-left:auto;padding:7px 12px;border-radius:8px;border:0;background:#DC2626;color:#fff;font-weight:700;cursor:pointer;font-family:inherit}
+.sisop-fundo{position:fixed;inset:0;background:rgba(15,20,28,.5);display:flex;align-items:center;justify-content:center;z-index:9000;padding:16px}
+.sisop-ficha{width:100%;max-width:400px;max-height:90vh;overflow-y:auto;background:var(--carta);color:var(--tinta);border-radius:14px;padding:20px;box-shadow:0 20px 60px rgba(0,0,0,.35);display:flex;flex-direction:column;gap:14px}
+.sisop-ficha h3{margin:0;font-size:18px}.sisop-ficha small{color:var(--tinta3)}
+.sisop-ficha .rot{font-size:12px;font-weight:700;color:var(--tinta3);letter-spacing:.05em;text-transform:uppercase}
+.sisop-ficha .esc{display:flex;gap:8px}
+.sisop-ficha .esc button{flex:1;padding:12px;border-radius:10px;border:2px solid var(--borda2);background:var(--carta);color:var(--tinta);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;font-family:inherit}
+.sisop-ficha .esc button[aria-pressed="true"]{border-color:#1E3A8A;background:#EEF2FF;color:#0F172A}
+.sisop-ficha .esc i{width:12px;height:12px;border-radius:50%}
+.sisop-ficha .quando{padding:10px 12px;border-radius:10px;background:var(--carta2);font-size:13px;color:var(--tinta2)}
+.sisop-ficha .quando.ruim{background:#FEF2F2;color:#7F1D1D}
+.sisop-ficha footer{display:flex;justify-content:flex-end;gap:8px}
+.sisop-ficha footer button{padding:10px 16px;border-radius:10px;border:1px solid var(--borda2);background:var(--carta);color:var(--tinta);font-weight:600;cursor:pointer;font-family:inherit}
+.sisop-ficha footer .ok{background:#1E3A8A;color:#fff;border-color:#1E3A8A}
+.sisop-lista{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.sisop-lista button{width:100%;display:flex;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:10px;border:1px solid var(--borda2);background:var(--carta);color:var(--tinta);cursor:pointer;font-family:inherit;font-size:14px}
+.sisop-lista b{color:#DC2626}
 
 /* relatórios */
 .chips{padding:13px 14px;display:flex;flex-wrap:wrap;gap:7px}
@@ -1352,7 +1392,18 @@ html[data-tema="escuro"] .rp-mais{color:#4ADE9E}
         <button class="aba" data-grupo="tec" data-mostra="tec" aria-pressed="false">Técnico</button>
       </div>
     </div>
+    <button class="sisop-bt" id="btSisOp" type="button" aria-pressed="false"><i></i>Modo Sistemas de Operação</button>
   </div>
+  <div class="sisop-legenda" id="sisopLegenda">
+    <b>Sistemas de Operação</b>
+    <span><i style="background:#1E3A8A"></i>Sistema AZ</span>
+    <span><i style="background:#fff;box-shadow:0 0 0 1.5px #0B1220"></i>Sistema VTM</span>
+    <span><i class="q"></i>Online</span>
+    <span><i class="q" style="background-image:repeating-linear-gradient(45deg,rgba(15,20,28,.38) 0 4px,transparent 4px 8px)"></i>Offline</span>
+    <span><i class="q" style="background:transparent;outline:3px solid #DC2626"></i>Offline há mais de 3 dias (com som)</span>
+    <span style="margin-left:auto">Toque na TV para marcar o sistema e se está online</span>
+  </div>
+  <div class="sisop-aviso" id="sisopAviso" hidden><span id="sisopAvisoTxt"></span><button type="button" id="sisopVer">Ver quais</button></div>
 
   <div class="duplo">
     <section class="bloco" id="blocoCad">
@@ -2792,6 +2843,7 @@ function desenharMapas(){
   $("#infoCad").textContent = nCad ? `${nCad} a preencher` : "todos cadastrados";
   $("#infoTec").textContent = (nTec ? `${nTec} com O.S` : "nenhuma O.S aberta")
     + (nPedidos ? ` · ${nPedidos} aguardando compra` : "");
+  SisOp.decorar();
 }
 
 /* ============================================================
@@ -3102,6 +3154,134 @@ function desenharLista(){
 }
 
 function redesenhar(){ desenharResumo(); desenharMapas(); desenharCriterios(); desenharLista(); }
+
+/* ============================================================
+   MODO SISTEMAS DE OPERAÇÃO
+   Cada TV guarda, dentro de det.op, em que sistema roda (AZ ou VTM) e se
+   está online ou offline, com desde quando e quem marcou. Viaja para a base
+   junto com o resto da TV (det), sem coluna nova.
+   Offline há mais de 3 dias: borda vermelha, aviso no topo e som.
+   ============================================================ */
+const SisOp = {
+  CH: "busaoeasy-modo-sisop",
+  DIAS: 3,
+  somTocadoCom: -1,
+  ligado(){ return document.documentElement.classList.contains("modo-sisop"); },
+  op(b){ return (b.det && b.det.op) || {}; },
+  dias(iso){ const t = Date.parse(iso || ""); return isNaN(t) ? 0 : (Date.now() - t) / 86400000; },
+  atrasadas(){ return BENS.filter(b => { const o = this.op(b); return o.st === "off" && this.dias(o.em) > this.DIAS; }); },
+  ligar(sim){
+    document.documentElement.classList.toggle("modo-sisop", sim);
+    const bt = $("#btSisOp"); if(bt) bt.setAttribute("aria-pressed", sim ? "true" : "false");
+    try{ localStorage.setItem(this.CH, sim ? "1" : "0"); }catch(e){}
+  },
+  decorar(){
+    document.querySelectorAll(".mapa .cel").forEach(c => {
+      const b = BENS[+c.dataset.i]; if(!b) return;
+      const o = this.op(b);
+      c.querySelectorAll(".sisop-pt").forEach(x => x.remove());
+      c.classList.remove("sisop-off", "sisop-alerta");
+      if(o.sis) c.insertAdjacentHTML("beforeend", `<span class="sisop-pt ${o.sis === "AZ" ? "az" : "vtm"}" aria-hidden="true"></span>`);
+      if(o.st === "off"){ c.classList.add("sisop-off"); if(this.dias(o.em) > this.DIAS) c.classList.add("sisop-alerta"); }
+    });
+    this.avisar();
+  },
+  avisar(){
+    const lista = this.atrasadas(), av = $("#sisopAviso");
+    if(!av) return;
+    if(!lista.length || ehObservador()){ av.hidden = true; this.somTocadoCom = 0; return; }
+    $("#sisopAvisoTxt").textContent = `🔔 ${lista.length} TV${lista.length > 1 ? "s estão" : " está"} offline há mais de ${this.DIAS} dias`;
+    av.hidden = false;
+    if(lista.length > this.somTocadoCom){ this.somTocadoCom = lista.length; this.som(); }
+  },
+  /* Alerta curto em dois tons, gerado pelo próprio navegador (sem arquivo). */
+  som(){
+    try{
+      this.ac = this.ac || new (window.AudioContext || window.webkitAudioContext)();
+      const ac = this.ac;
+      const toca = () => { const t = ac.currentTime + 0.02;
+        [[880, 0], [660, 0.22], [880, 0.44], [660, 0.66]].forEach(([f, d]) => {
+          const o = ac.createOscillator(), g = ac.createGain();
+          o.type = "square"; o.frequency.value = f;
+          g.gain.setValueAtTime(0.0001, t + d); g.gain.exponentialRampToValueAtTime(0.12, t + d + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + d + 0.18);
+          o.connect(g).connect(ac.destination); o.start(t + d); o.stop(t + d + 0.2);
+        }); };
+      if(ac.state === "suspended"){
+        /* O navegador só libera som depois de um toque: toca no primeiro toque. */
+        const vai = () => { ac.resume().then(toca); document.removeEventListener("pointerdown", vai); };
+        document.addEventListener("pointerdown", vai);
+      } else toca();
+    }catch(e){}
+  },
+  fechar(){ const f = document.querySelector(".sisop-fundo"); if(f) f.remove(); },
+  quando(o){
+    if(!o.st) return `<div class="quando">Ainda sem marcação.</div>`;
+    const d = this.dias(o.em), n = Math.floor(d);
+    const ha = n === 0 ? "hoje" : n === 1 ? "há 1 dia" : `há ${n} dias`;
+    const data = o.em ? new Date(o.em).toLocaleDateString("pt-BR") + " " + new Date(o.em).toLocaleTimeString("pt-BR", {hour:"2-digit", minute:"2-digit"}) : "";
+    const ruim = o.st === "off" && d > this.DIAS;
+    return `<div class="quando${ruim ? " ruim" : ""}">${o.st === "off" ? "Offline" : "Online"} desde ${esc(data)} · <b>${ha}</b>${o.por ? ` · marcado por ${esc(o.por)}` : ""}</div>`;
+  },
+  abrir(i){
+    const b = BENS[i]; if(!b) return;
+    const o = this.op(b), novo = {sis: o.sis || "", st: o.st || ""};
+    const bt = (grupo, val, rot, cor) => `<button type="button" data-g="${grupo}" data-v="${val}" aria-pressed="${novo[grupo] === val}"><i style="${cor}"></i>${rot}</button>`;
+    this.fechar();
+    document.body.insertAdjacentHTML("beforeend", `<div class="sisop-fundo"><section class="sisop-ficha" role="dialog" aria-modal="true" aria-label="Sistema de operação da TV ${esc(b.n)}">
+      <div><h3>TV ${esc(b.n)}${b.onibus ? ` · ônibus ${esc(b.onibus)}` : ""}</h3><small>Sistemas de Operação</small></div>
+      <div class="rot">Sistema</div>
+      <div class="esc">${bt("sis", "AZ", "AZ", "background:#1E3A8A")}${bt("sis", "VTM", "VTM", "background:#fff;box-shadow:0 0 0 1.5px #0B1220")}</div>
+      <div class="rot">Situação</div>
+      <div class="esc">${bt("st", "on", "Online", "background:#16A34A")}${bt("st", "off", "Offline", "background:#9CA3AF")}</div>
+      ${this.quando(o)}
+      <footer><button type="button" data-x>Cancelar</button><button type="button" class="ok" data-ok>Salvar</button></footer>
+    </section></div>`);
+    const fundo = document.querySelector(".sisop-fundo");
+    fundo.addEventListener("click", ev => {
+      if(ev.target === fundo || ev.target.closest("[data-x]")){ this.fechar(); return; }
+      const e = ev.target.closest("[data-g]");
+      if(e){ novo[e.dataset.g] = e.dataset.v; fundo.querySelectorAll(`[data-g="${e.dataset.g}"]`).forEach(x => x.setAttribute("aria-pressed", x === e ? "true" : "false")); return; }
+      if(ev.target.closest("[data-ok]")) this.salvar(b, o, novo);
+    });
+  },
+  salvar(b, o, novo){
+    if(novo.sis === (o.sis || "") && novo.st === (o.st || "")){ this.fechar(); return; }
+    b.det = b.det || {};
+    /* O tempo conta a partir de quando a situação mudou; trocar só o sistema não zera a contagem. */
+    const agora = new Date().toISOString();
+    b.det.op = {sis: novo.sis, st: novo.st, em: novo.st !== (o.st || "") ? agora : (o.em || agora), por: porQuem()};
+    b.atualizadoEm = agora;
+    Nuvem.marcarAlterado(b.n);
+    gravar(); redesenhar(); this.fechar();
+    avisar(`TV ${b.n}: ${novo.sis ? "sistema " + novo.sis : "sem sistema"}${novo.st ? " · " + (novo.st === "on" ? "online" : "offline") : ""}`);
+    Nuvem.sincronizar(false);
+  },
+  verAtrasadas(){
+    const lista = this.atrasadas().sort((a, z) => this.dias(this.op(z).em) - this.dias(this.op(a).em));
+    this.fechar();
+    document.body.insertAdjacentHTML("beforeend", `<div class="sisop-fundo"><section class="sisop-ficha" role="dialog" aria-modal="true" aria-label="TVs offline há mais de ${this.DIAS} dias">
+      <div><h3>Offline há mais de ${this.DIAS} dias</h3><small>Toque numa TV para atualizar</small></div>
+      <ul class="sisop-lista">${lista.map(b => `<li><button type="button" data-i="${BENS.indexOf(b)}"><span>TV ${esc(b.n)}${b.onibus ? " · ônibus " + esc(b.onibus) : ""}</span><b>${Math.floor(this.dias(this.op(b).em))} dias</b></button></li>`).join("")}</ul>
+      <footer><button type="button" data-x>Fechar</button></footer>
+    </section></div>`);
+    const fundo = document.querySelector(".sisop-fundo");
+    fundo.addEventListener("click", ev => {
+      if(ev.target === fundo || ev.target.closest("[data-x]")){ this.fechar(); return; }
+      const e = ev.target.closest("[data-i]");
+      if(e){ if(!this.ligado()) this.ligar(true); this.abrir(+e.dataset.i); }
+    });
+  },
+  iniciar(){
+    let sim = false; try{ sim = localStorage.getItem(this.CH) === "1"; }catch(e){}
+    this.ligar(sim);
+    const bt = $("#btSisOp"); if(bt) bt.addEventListener("click", () => { this.ligar(!this.ligado()); this.decorar(); });
+    const ver = $("#sisopVer"); if(ver) ver.addEventListener("click", () => this.verAtrasadas());
+    document.addEventListener("keydown", ev => { if(ev.key === "Escape") this.fechar(); });
+    /* Os dias passam com o painel aberto: confere de hora em hora. */
+    setInterval(() => this.decorar(), 3600000);
+  }
+};
+document.addEventListener("DOMContentLoaded", () => SisOp.iniciar());
 
 /* ============================================================
    9. FICHA DO BEM
@@ -6605,6 +6785,7 @@ document.addEventListener("click", ev => {
     /* Diretoria: o quadro abre a ficha administrativa só para leitura, em
        qualquer modo. O registro de problema fica no botão dentro da ficha. */
     if(ehObservador()){ abrirFicha(+cel.dataset.i, "adm"); return; }
+    if(SisOp.ligado()){ SisOp.abrir(+cel.dataset.i); return; }
     const raiz = document.documentElement;
     /* Nos modos Painel e Registro de OS o clique abre a tela enxuta de motivo —
        vale para qualquer perfil, inclusive a diretoria: ela avista um problema

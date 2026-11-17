@@ -830,7 +830,10 @@ html.modo-sisop .cel{position:relative}
 html.modo-sisop .cel .sisop-pt{display:block;position:absolute;top:3px;right:3px;width:11px;height:11px;border-radius:50%}
 .sisop-pt.az{background:#1E3A8A;box-shadow:0 0 0 1.5px rgba(255,255,255,.95)}
 .sisop-pt.vtm{background:#FFFFFF;box-shadow:0 0 0 1.5px #0B1220}
-html.modo-sisop .cel.sisop-off{background-image:repeating-linear-gradient(45deg,rgba(15,20,28,.38) 0 4px,transparent 4px 8px)}
+/* No modo, a situação toma o fundo todo da TV: offline amarelo tracejado, online verde claro */
+html.modo-sisop .cel.sisop-off{background:#FACC15 repeating-linear-gradient(45deg,rgba(15,20,28,.30) 0 4px,transparent 4px 8px) !important;color:#111827 !important}
+html.modo-sisop .cel.sisop-on{background:#86EFAC !important;color:#111827 !important}
+html.modo-sisop .cel.sisop-off *,html.modo-sisop .cel.sisop-on *{color:#111827 !important}
 html.modo-sisop .cel.sisop-alerta{outline:3px solid #DC2626;outline-offset:-1px;animation:sisopPisca 1.2s ease-in-out infinite}
 @keyframes sisopPisca{50%{outline-color:rgba(220,38,38,.25)}}
 @media (prefers-reduced-motion:reduce){html.modo-sisop .cel.sisop-alerta{animation:none}}
@@ -1400,8 +1403,8 @@ html[data-tema="escuro"] .rp-mais{color:#4ADE9E}
     <b>Sistemas de Operação</b>
     <span><i style="background:#1E3A8A"></i>Sistema AZ</span>
     <span><i style="background:#fff;box-shadow:0 0 0 1.5px #0B1220"></i>Sistema VTM</span>
-    <span><i class="q"></i>Online</span>
-    <span><i class="q" style="background-image:repeating-linear-gradient(45deg,rgba(15,20,28,.38) 0 4px,transparent 4px 8px)"></i>Offline</span>
+    <span><i class="q" style="background:#86EFAC"></i>Online</span>
+    <span><i class="q" style="background:#FACC15 repeating-linear-gradient(45deg,rgba(15,20,28,.30) 0 4px,transparent 4px 8px)"></i>Offline</span>
     <span><i class="q" style="background:transparent;outline:3px solid #DC2626"></i>Offline há mais de 3 dias (com som)</span>
     <span style="margin-left:auto">Toque na TV para marcar o sistema e se está online</span>
   </div>
@@ -3194,8 +3197,9 @@ const SisOp = {
       const b = BENS[+c.dataset.i]; if(!b) return;
       const o = this.op(b);
       c.querySelectorAll(".sisop-pt").forEach(x => x.remove());
-      c.classList.remove("sisop-off", "sisop-alerta");
+      c.classList.remove("sisop-off", "sisop-on", "sisop-alerta");
       if(o.sis) c.insertAdjacentHTML("beforeend", `<span class="sisop-pt ${o.sis === "AZ" ? "az" : "vtm"}" aria-hidden="true"></span>`);
+      if(o.st === "on") c.classList.add("sisop-on");
       if(o.st === "off"){ c.classList.add("sisop-off"); if(this.dias(o.em) > this.DIAS) c.classList.add("sisop-alerta"); }
     });
     this.avisar();

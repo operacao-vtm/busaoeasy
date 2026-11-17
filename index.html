@@ -819,6 +819,8 @@ html[data-tema="escuro"] .pr-ok{color:#4ADE9E}
 .seg.ruim[aria-pressed="true"] span{color:rgba(255,255,255,.82)}
 .cel.fora{opacity:.13;pointer-events:none}
 /* ---- Modo Sistemas de Operação: ponto do sistema (AZ ou VTM) e situação online/offline ---- */
+.sisop-barra{display:flex;justify-content:flex-end;margin:0 0 8px}
+.sisop-barra[hidden]{display:none}
 .sisop-bt{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;border:2px solid #1E3A8A;background:var(--carta);color:#1E3A8A;font-weight:700;font-size:13px;cursor:pointer;align-self:flex-end;font-family:inherit}
 html[data-tema="escuro"] .sisop-bt{color:#9DB4F5;border-color:#9DB4F5}
 html.modo-sisop .sisop-bt{background:#1E3A8A;color:#fff;border-color:#1E3A8A}
@@ -1392,8 +1394,8 @@ html[data-tema="escuro"] .rp-mais{color:#4ADE9E}
         <button class="aba" data-grupo="tec" data-mostra="tec" aria-pressed="false">Técnico</button>
       </div>
     </div>
-    <button class="sisop-bt" id="btSisOp" type="button" aria-pressed="false"><i></i>Modo Sistemas de Operação</button>
   </div>
+  <div class="sisop-barra" id="sisopBarra" hidden><button class="sisop-bt" id="btSisOp" type="button" aria-pressed="false"><i></i>Modo Sistemas de Operação</button></div>
   <div class="sisop-legenda" id="sisopLegenda">
     <b>Sistemas de Operação</b>
     <span><i style="background:#1E3A8A"></i>Sistema AZ</span>
@@ -3164,9 +3166,20 @@ function redesenhar(){ desenharResumo(); desenharMapas(); desenharCriterios(); d
    ============================================================ */
 const SisOp = {
   CH: "busaoeasy-modo-sisop",
+  /* Quem usa o modo (pelo primeiro nome, sem acento): mesmo padrão da lista
+     de quem altera os e-mails do relatório. */
+  PODEM: ["carlos", "joao", "gustavo", "robert"],
+  pode(){
+    const n = String((QUEM && QUEM.nome) || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase().split(/\s+/)[0];
+    return this.PODEM.indexOf(n) >= 0;
+  },
+  mostrarBotao(){
+    const barra = $("#sisopBarra"); if(barra) barra.hidden = !this.pode();
+    if(!this.pode() && this.ligado()) document.documentElement.classList.remove("modo-sisop");
+  },
   DIAS: 3,
   somTocadoCom: -1,
-  ligado(){ return document.documentElement.classList.contains("modo-sisop"); },
+  ligado(){ return this.pode() && document.documentElement.classList.contains("modo-sisop"); },
   op(b){ return (b.det && b.det.op) || {}; },
   dias(iso){ const t = Date.parse(iso || ""); return isNaN(t) ? 0 : (Date.now() - t) / 86400000; },
   atrasadas(){ return BENS.filter(b => { const o = this.op(b); return o.st === "off" && this.dias(o.em) > this.DIAS; }); },
@@ -3176,6 +3189,7 @@ const SisOp = {
     try{ localStorage.setItem(this.CH, sim ? "1" : "0"); }catch(e){}
   },
   decorar(){
+    this.mostrarBotao();
     document.querySelectorAll(".mapa .cel").forEach(c => {
       const b = BENS[+c.dataset.i]; if(!b) return;
       const o = this.op(b);
@@ -3189,7 +3203,7 @@ const SisOp = {
   avisar(){
     const lista = this.atrasadas(), av = $("#sisopAviso");
     if(!av) return;
-    if(!lista.length || ehObservador()){ av.hidden = true; this.somTocadoCom = 0; return; }
+    if(!lista.length || !this.pode()){ av.hidden = true; this.somTocadoCom = 0; return; }
     $("#sisopAvisoTxt").textContent = `🔔 ${lista.length} TV${lista.length > 1 ? "s estão" : " está"} offline há mais de ${this.DIAS} dias`;
     av.hidden = false;
     if(lista.length > this.somTocadoCom){ this.somTocadoCom = lista.length; this.som(); }
@@ -5376,6 +5390,7 @@ function filtrarMenuPorPerfil(){
 }
 
 function pintarQuem(){
+  try{ SisOp.mostrarBotao(); }catch(e){}
   const entrar = $("#menu button[data-a=\"entrar\"]");
   const sair = $("#menu button[data-a=\"sair\"]");
   const dentro = !!(QUEM && QUEM.nome);
@@ -6797,8 +6812,8 @@ document.addEventListener("click", ev => {
   if(cel){
     /* Diretoria: o quadro abre a ficha administrativa só para leitura, em
        qualquer modo. O registro de problema fica no botão dentro da ficha. */
-    if(ehObservador()){ abrirFicha(+cel.dataset.i, "adm"); return; }
     if(SisOp.ligado()){ SisOp.abrir(+cel.dataset.i); return; }
+    if(ehObservador()){ abrirFicha(+cel.dataset.i, "adm"); return; }
     const raiz = document.documentElement;
     /* Nos modos Painel e Registro de OS o clique abre a tela enxuta de motivo —
        vale para qualquer perfil, inclusive a diretoria: ela avista um problema

@@ -4447,6 +4447,13 @@ function soData(v){
 
 const dataChave = iso => String(iso || "").replace(/-/g, "");
 
+/* Data do registro, usada pelo intervalo de data quando a coluna de
+   referência não é uma data. */
+function dataDoRegistro(b, o, adm){
+  if(!adm && o) return o.dataAbertura || o.criadaEm || "";
+  return b.cadastradoPorEm || b.atualizadoEm || "";
+}
+
 function naFaixaNumero(v, f){
   const de = soNumero(f.nde), ate = soNumero(f.nate);
   if(isNaN(de) && isNaN(ate)) return true;      /* campo vazio não filtra */
@@ -4481,7 +4488,12 @@ function linhasDoRelatorio(){
      trocou o que o intervalo recorta. */
   const naFaixa = (b, o) => {
     const v = valorCampo(b, o, primeiraColuna());
-    return naFaixaNumero(v, f) && naFaixaData(v, f);
+    /* A data só recorta pela primeira coluna quando ela É uma data. Se a
+       primeira coluna for outra coisa (Nº ônibus, Nº TV...), nenhuma linha
+       tinha data e o relatório saía vazio. Nesse caso vale a data do próprio
+       registro: no administrativo, a do cadastro; no técnico, a da abertura da O.S. */
+    const vData = soData(v) ? v : dataDoRegistro(b, o, adm);
+    return naFaixaNumero(v, f) && naFaixaData(vData, f);
   };
 
   const passaStatus = (b, tipo) => {
@@ -4570,7 +4582,8 @@ function montarDocumento(){
   }
   if(f.dde || f.date){
     const br = d => d ? d.split("-").reverse().join("/") : "";
-    descr.push(ref + ": " + (f.dde ? "de " + br(f.dde) : "do início") +
+    const refData = /data/i.test(ref) ? ref : (adm ? "Data do cadastro" : "Data de abertura da O.S");
+    descr.push(refData + ": " + (f.dde ? "de " + br(f.dde) : "do início") +
                (f.date ? " até " + br(f.date) : " ao fim"));
   }
   if(adm){
